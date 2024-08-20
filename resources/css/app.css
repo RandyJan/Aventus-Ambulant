@@ -1,0 +1,51 @@
+@tailwind base;
+
+@tailwind components;
+
+    body {
+        font-family: 'Roboto', 'Nunito', sans-serif;
+    }
+
+    .card {
+        @apply bg-gray-50 p-2 container m-auto max-w-xl rounded;
+    }
+
+    .card > h1 {
+        @apply border-b border-gray-300 font-semibold;
+    }
+
+    .btn {
+        @apply bg-gray-200 px-2 rounded focus:bg-gray-300 text-gray-600 focus:ring-1 focus:ring-gray-200;
+    }
+
+    .btn-xs {
+        @apply px-2 py-0.5 text-xs focus:ring-0;
+    }
+
+    .btn-md {
+        @apply px-3 py-1 text-lg focus:ring-2;
+    }
+
+    .btn-lg {
+        @apply px-4 py-2 text-2xl focus:ring-4;
+    }
+
+    .btn-info {
+        @apply bg-blue-400 focus:bg-blue-500 text-gray-50 focus:ring-blue-300;
+    }
+
+    .btn-warning {
+        @apply bg-yellow-300 focus:bg-yellow-400 text-gray-50 focus:ring-yellow-200;
+    }
+
+    .btn-danger {
+        @apply bg-red-400 focus:bg-red-500 text-gray-50 focus:ring-red-300;
+    }
+
+    .badge {
+        @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium;
+    }
+
+
+
+@tailwind utilities;
