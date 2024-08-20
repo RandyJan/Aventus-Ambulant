@@ -5067,7 +5067,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             window.location = "/"; // this.open_the_cart();
           })["catch"](function (error) {
             toast.fire({
-              title: "Error creating file."
+              icon: 'error',
+              title: "Job order no. already exist"
             });
             console.log(error);
             debug(error.response.data);
@@ -62453,11 +62454,11 @@ var render = function () {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "orderslip-form" }, [
-    _c("h2", [_vm._v("New Order slip")]),
+    _c("h2", [_vm._v("New Job Order")]),
     _vm._v(" "),
     _c("div", [
       _c("label", { attrs: { for: "orderslipNo" } }, [
-        _vm._v("Orderslip Number:"),
+        _vm._v("Job Order Number:"),
       ]),
       _vm._v(" "),
       _c("input", {
@@ -63356,7 +63357,7 @@ var render = function () {
                     },
                     [
                       _vm._v(
-                        "\n                            Transaction No.\n                            "
+                        "\n                            Job Order No.\n                            "
                       ),
                       _c("span", { staticClass: "font-extrabold text-lg" }, [
                         _vm._v(
@@ -66636,7 +66637,7 @@ var render = function () {
                           },
                           [
                             _vm._v(
-                              "\n                            Orderslip No.\n                            "
+                              "\n                            Job Order No.\n                            "
                             ),
                             _c(
                               "span",

@@ -1,8 +1,8 @@
 <template>
     <div class="orderslip-form">
-      <h2>New Order slip</h2>
+      <h2>New Job Order</h2>
       <div>
-        <label for="orderslipNo">Orderslip Number:</label>
+        <label for="orderslipNo">Job Order Number:</label>
         <input type="text" id="orderslipNo" v-model="orderslipNo" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-md sm:text-sm border-gray-300"/>
       </div>
       <div>
@@ -111,7 +111,8 @@ import { mapGetters, mapMutations } from "vuex";
                         })
                         .catch((error) => {
                           toast.fire({
-                                title: "Error creating file.",
+                            icon:'error',
+                                title: "Job order no. already exist",
                             });
                             console.log(error);
                             debug(error.response.data);

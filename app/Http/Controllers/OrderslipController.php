@@ -81,7 +81,7 @@ class OrderslipController extends Controller
             // create a new orderslip
             $orderslip_new_id =  OrderSlipHeader::getNewId($request->branch_id, $request->outlet_id, $request->device_id);
             $payload = [
-                'ORDERSLIPNO' => $request->orderslip_no,
+                'ORDERSLIPNO' => $orderslip_new_id ,
                 'BRANCHID' => $request->branch_id,
                 'CUSTOMERNAME'=>$request->customer_name,
                 'OUTLETID' => $request->outlet_id,

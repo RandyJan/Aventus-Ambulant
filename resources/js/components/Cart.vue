@@ -411,7 +411,7 @@
                             <div
                                 class="text-sm flex justify-between items-center border-b border-gray-300 py-2 mt-2"
                             >
-                                Transaction No.
+                                Job Order No.
                                 <span class="font-extrabold text-lg">{{
                                     get_current_transaction.orderslip_number
                                 }}</span>

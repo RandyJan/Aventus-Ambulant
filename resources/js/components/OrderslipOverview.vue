@@ -243,7 +243,7 @@
                             <div
                                 class="text-sm flex justify-between items-center border-b border-gray-300 py-2 mt-2"
                             >
-                                Orderslip No.
+                                Job Order No.
                                 <span class="font-extrabold text-lg">{{
                                     order_summary.orderslip_number
                                 }}</span>
