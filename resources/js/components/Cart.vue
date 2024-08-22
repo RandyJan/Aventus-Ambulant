@@ -427,7 +427,7 @@
                             <div
                                 class="text-sm flex justify-between border-b border-gray-300 py-2"
                             >
-                                Server
+                                Attendant
                                 <span class="font-semibold">{{
                                     get_current_transaction.prepared_by
                                 }}</span>
@@ -456,7 +456,7 @@
                                 "
                                 class="text-sm flex justify-between items-center border-b border-gray-300 py-2"
                             >
-                                <div class="flex items-center">
+                                <!-- <div class="flex items-center">
                                     Table No.
                                     <button
                                         @click="
@@ -480,7 +480,7 @@
                                             />
                                         </svg>
                                     </button>
-                                </div>
+                                </div> -->
                                 <span class="font-semibold">
                                     {{
                                         get_current_transaction.table_number
@@ -533,7 +533,7 @@
                                 "
                                 class="text-sm flex justify-between items-center border-b border-gray-300 py-2"
                             >
-                                <div class="flex items-center">
+                                <!-- <div class="flex items-center">
                                     Total Head Count
                                     <button
                                         @click="updateTotalHeadcount()"
@@ -555,7 +555,7 @@
                                             />
                                         </svg>
                                     </button>
-                                </div>
+                                </div> -->
                                 <span class="font-semibold">
                                     {{
                                         get_current_transaction.total_headcount
@@ -627,7 +627,7 @@
                             </div>
 
                             <!-- SC Discount -->
-                            <div class="text-sm flex justify-end items-center">
+                            <!-- <div class="text-sm flex justify-end items-center">
                                 <div class="flex items-center mr-4">
                                     SC Discount
                                 </div>
@@ -636,7 +636,7 @@
                                         get_current_transaction.sc_discount_amount
                                     }}
                                 </span>
-                            </div>
+                            </div> -->
                             <!-- Service Charge -->
                             <div
                                 v-if="get_settings.service_charge"
@@ -651,6 +651,17 @@
                                 <span class="font-semibold">
                                     {{
                                         get_current_transaction.service_charge_amount
+                                    }}
+                                </span>
+                            </div>
+                            <!-- Discount -->
+                            <div class="text-sm flex justify-end items-center">
+                                <div class="flex items-center mr-4">
+                                   Discount
+                                </div>
+                                <span class="font-semibold">
+                                    {{
+                                        get_current_transaction.sc_discount_amount
                                     }}
                                 </span>
                             </div>

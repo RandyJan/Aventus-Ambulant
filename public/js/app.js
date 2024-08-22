@@ -5003,6 +5003,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -5010,7 +5011,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       orderslipNo: '',
       customerName: '',
       isVisible: false,
-      accountType: ''
+      accountType: 0,
+      accountTypeString: acountType == 1 ? 'Private' : accountType == 2 ? 'Corporate' : "Select"
     };
   },
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapMutations)(["open_the_cart"])), {}, {
@@ -5145,6 +5147,17 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -8347,6 +8360,15 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -62570,9 +62592,10 @@ var render = function () {
           [
             _vm._v(
               "\n        " +
-                _vm._s(_vm.accountType == "" ? "Select" : _vm.accountType) +
-                "\n          "
+                _vm._s(_vm.accountType == 0 ? "Select" : _vm.accountType) +
+                "\n        "
             ),
+            _vm._v(" "),
             _c(
               "svg",
               {
@@ -62624,7 +62647,7 @@ var render = function () {
                     },
                     on: {
                       click: function ($event) {
-                        return _vm.accounTypeFunction("Private")
+                        return _vm.accounTypeFunction(1)
                       },
                     },
                   },
@@ -62643,7 +62666,7 @@ var render = function () {
                     },
                     on: {
                       click: function ($event) {
-                        return _vm.accounTypeFunction("Corporate")
+                        return _vm.accounTypeFunction(2)
                       },
                     },
                   },
@@ -63534,7 +63557,7 @@ var render = function () {
                     },
                     [
                       _vm._v(
-                        "\n                            Server\n                            "
+                        "\n                            Attendant\n                            "
                       ),
                       _c("span", { staticClass: "font-semibold" }, [
                         _vm._v(_vm._s(_vm.get_current_transaction.prepared_by)),
@@ -63582,49 +63605,6 @@ var render = function () {
                             "text-sm flex justify-between items-center border-b border-gray-300 py-2",
                         },
                         [
-                          _c("div", { staticClass: "flex items-center" }, [
-                            _vm._v(
-                              "\n                                Table No.\n                                "
-                            ),
-                            _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "ml-1 inline-flex items-center px-1 py-1 border border-gray-300 shadow-sm text-xs font-medium rounded text-sky-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring focus:ring-sky-500",
-                                attrs: { type: "button" },
-                                on: {
-                                  click: function ($event) {
-                                    _vm.show_table_orderslip_assignment_modal = true
-                                  },
-                                },
-                              },
-                              [
-                                _c(
-                                  "svg",
-                                  {
-                                    staticClass: "h-4 w-4",
-                                    attrs: {
-                                      xmlns: "http://www.w3.org/2000/svg",
-                                      fill: "none",
-                                      viewBox: "0 0 24 24",
-                                      stroke: "currentColor",
-                                    },
-                                  },
-                                  [
-                                    _c("path", {
-                                      attrs: {
-                                        "stroke-linecap": "round",
-                                        "stroke-linejoin": "round",
-                                        "stroke-width": "2",
-                                        d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z",
-                                      },
-                                    }),
-                                  ]
-                                ),
-                              ]
-                            ),
-                          ]),
-                          _vm._v(" "),
                           _c("span", { staticClass: "font-semibold" }, [
                             _vm._v(
                               "\n                                " +
@@ -63716,49 +63696,6 @@ var render = function () {
                             "text-sm flex justify-between items-center border-b border-gray-300 py-2",
                         },
                         [
-                          _c("div", { staticClass: "flex items-center" }, [
-                            _vm._v(
-                              "\n                                Total Head Count\n                                "
-                            ),
-                            _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "ml-1 inline-flex items-center px-1 py-1 border border-gray-300 shadow-sm text-xs font-medium rounded text-sky-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring focus:ring-sky-500",
-                                attrs: { type: "button" },
-                                on: {
-                                  click: function ($event) {
-                                    return _vm.updateTotalHeadcount()
-                                  },
-                                },
-                              },
-                              [
-                                _c(
-                                  "svg",
-                                  {
-                                    staticClass: "h-4 w-4",
-                                    attrs: {
-                                      xmlns: "http://www.w3.org/2000/svg",
-                                      fill: "none",
-                                      viewBox: "0 0 24 24",
-                                      stroke: "currentColor",
-                                    },
-                                  },
-                                  [
-                                    _c("path", {
-                                      attrs: {
-                                        "stroke-linecap": "round",
-                                        "stroke-linejoin": "round",
-                                        "stroke-width": "2",
-                                        d: "M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z",
-                                      },
-                                    }),
-                                  ]
-                                ),
-                              ]
-                            ),
-                          ]),
-                          _vm._v(" "),
                           _c("span", { staticClass: "font-semibold" }, [
                             _vm._v(
                               "\n                                " +
@@ -63933,28 +63870,6 @@ var render = function () {
                     ]
                   ),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "text-sm flex justify-end items-center" },
-                    [
-                      _c("div", { staticClass: "flex items-center mr-4" }, [
-                        _vm._v(
-                          "\n                                SC Discount\n                            "
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "font-semibold" }, [
-                        _vm._v(
-                          "\n                                " +
-                            _vm._s(
-                              _vm.get_current_transaction.sc_discount_amount
-                            ) +
-                            "\n                            "
-                        ),
-                      ]),
-                    ]
-                  ),
-                  _vm._v(" "),
                   _vm.get_settings.service_charge
                     ? _c(
                         "div",
@@ -63990,6 +63905,28 @@ var render = function () {
                         ]
                       )
                     : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "text-sm flex justify-end items-center" },
+                    [
+                      _c("div", { staticClass: "flex items-center mr-4" }, [
+                        _vm._v(
+                          "\n                               Discount\n                            "
+                        ),
+                      ]),
+                      _vm._v(" "),
+                      _c("span", { staticClass: "font-semibold" }, [
+                        _vm._v(
+                          "\n                                " +
+                            _vm._s(
+                              _vm.get_current_transaction.sc_discount_amount
+                            ) +
+                            "\n                            "
+                        ),
+                      ]),
+                    ]
+                  ),
                   _vm._v(" "),
                   _c(
                     "div",
@@ -66818,7 +66755,7 @@ var render = function () {
                           },
                           [
                             _vm._v(
-                              "\n                            Server\n                            "
+                              "\n                            Attendant\n                            "
                             ),
                             _c("span", { staticClass: "font-semibold" }, [
                               _vm._v(_vm._s(_vm.order_summary.prepared_by)),
@@ -66878,35 +66815,6 @@ var render = function () {
                                       _vm._s(
                                         _vm.order_summary.plate_number
                                           ? _vm.order_summary.plate_number
-                                          : "-"
-                                      ) +
-                                      "\n                            "
-                                  ),
-                                ]),
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        _vm.get_settings.app_type == "restaurant_ambulant"
-                          ? _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "text-sm flex justify-between items-center border-b border-gray-300 py-2",
-                              },
-                              [
-                                _c(
-                                  "div",
-                                  { staticClass: "flex items-center" },
-                                  [_vm._v("Table No.")]
-                                ),
-                                _vm._v(" "),
-                                _c("span", { staticClass: "font-semibold" }, [
-                                  _vm._v(
-                                    "\n                                " +
-                                      _vm._s(
-                                        _vm.order_summary.table_number
-                                          ? _vm.order_summary.table_number
                                           : "-"
                                       ) +
                                       "\n                            "
@@ -67063,33 +66971,6 @@ var render = function () {
                           ]
                         ),
                         _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "text-sm flex justify-end items-center",
-                          },
-                          [
-                            _c(
-                              "div",
-                              { staticClass: "flex items-center mr-4" },
-                              [
-                                _vm._v(
-                                  "\n                                SC Discount\n                            "
-                                ),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("span", { staticClass: "font-semibold" }, [
-                              _vm._v(
-                                "\n                                " +
-                                  _vm._s(_vm.order_summary.sc_discount_amount) +
-                                  "\n                            "
-                              ),
-                            ]),
-                          ]
-                        ),
-                        _vm._v(" "),
                         _vm.get_settings.service_charge
                           ? _c(
                               "div",
@@ -67128,6 +67009,33 @@ var render = function () {
                               ]
                             )
                           : _vm._e(),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "text-sm flex justify-end items-center",
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "flex items-center mr-4" },
+                              [
+                                _vm._v(
+                                  "\n                                 Discount\n                            "
+                                ),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "font-semibold" }, [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(_vm.order_summary.sc_discount_amount) +
+                                  "\n                            "
+                              ),
+                            ]),
+                          ]
+                        ),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -75144,7 +75052,7 @@ var render = function () {
                                     ]
                                   ),
                                   _vm._v(
-                                    "\n                            Pending Orders\n                        "
+                                    "\n                            Job Orders\n                        "
                                   ),
                                 ]
                               )
@@ -75186,7 +75094,7 @@ var render = function () {
                                     ]
                                   ),
                                   _vm._v(
-                                    "\n                            Completed Orders\n                        "
+                                    "\n                           Completed Job Orders\n                        "
                                   ),
                                 ]
                               )
@@ -75229,52 +75137,6 @@ var render = function () {
                                   ),
                                   _vm._v(
                                     "\n                            Collections\n                        "
-                                  ),
-                                ]
-                              )
-                            : _vm._e(),
-                          _vm._v(" "),
-                          ["restaurant_ambulant"].includes(
-                            _vm.get_settings.app_type
-                          )
-                            ? _c(
-                                "a",
-                                {
-                                  staticClass:
-                                    "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-base font-medium rounded-md",
-                                  attrs: { href: "javascript:void(0);" },
-                                  on: {
-                                    click: function ($event) {
-                                      _vm.show_table_list_modal = true
-                                    },
-                                  },
-                                },
-                                [
-                                  _c(
-                                    "svg",
-                                    {
-                                      staticClass:
-                                        "h-6 w-6 text-gray-400 group-hover:text-gray-300 mr-4 flex-shrink-0",
-                                      attrs: {
-                                        xmlns: "http://www.w3.org/2000/svg",
-                                        fill: "none",
-                                        viewBox: "0 0 24 24",
-                                        stroke: "currentColor",
-                                        "stroke-width": "2",
-                                      },
-                                    },
-                                    [
-                                      _c("path", {
-                                        attrs: {
-                                          "stroke-linecap": "round",
-                                          "stroke-linejoin": "round",
-                                          d: "M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z",
-                                        },
-                                      }),
-                                    ]
-                                  ),
-                                  _vm._v(
-                                    "\n                            Tables\n                        "
                                   ),
                                 ]
                               )
@@ -75471,7 +75333,7 @@ var render = function () {
                             },
                             [
                               _vm._v(
-                                "\n                            Menu\n                        "
+                                "\n                            Procedure\n                        "
                               ),
                             ]
                           )
