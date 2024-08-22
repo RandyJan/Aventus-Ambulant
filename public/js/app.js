@@ -6722,6 +6722,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -8907,6 +8910,11 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
 //
 //
 //
@@ -64317,29 +64325,6 @@ var render = function () {
                       _c("div", { staticClass: "mt-5" }, [
                         _c("div", { staticClass: "flex items-start mt-2" }, [
                           _c(
-                            "svg",
-                            {
-                              staticClass: "h-5 w-5",
-                              attrs: {
-                                xmlns: "http://www.w3.org/2000/svg",
-                                fill: "none",
-                                viewBox: "0 0 24 24",
-                                stroke: "currentColor",
-                              },
-                            },
-                            [
-                              _c("path", {
-                                attrs: {
-                                  "stroke-linecap": "round",
-                                  "stroke-linejoin": "round",
-                                  "stroke-width": "2",
-                                  d: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
-                                },
-                              }),
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
                             "div",
                             {
                               staticClass:
@@ -64347,14 +64332,8 @@ var render = function () {
                             },
                             [
                               _vm._v(
-                                "\n                                " +
-                                  _vm._s(item.created_date) +
-                                  " "
-                              ),
-                              _c("br"),
-                              _vm._v(
-                                "\n                                " +
-                                  _vm._s(item.created_time) +
+                                "\n                                 \n                                Patient: \n                                " +
+                                  _vm._s(item.customer_name) +
                                   "\n                            "
                               ),
                             ]
@@ -67341,42 +67320,13 @@ var render = function () {
                           _vm._v(" "),
                           _c("div", { staticClass: "flex items-start mt-2" }, [
                             _c(
-                              "svg",
-                              {
-                                staticClass: "h-5 w-5",
-                                attrs: {
-                                  xmlns: "http://www.w3.org/2000/svg",
-                                  fill: "none",
-                                  viewBox: "0 0 24 24",
-                                  stroke: "currentColor",
-                                },
-                              },
-                              [
-                                _c("path", {
-                                  attrs: {
-                                    "stroke-linecap": "round",
-                                    "stroke-linejoin": "round",
-                                    "stroke-width": "2",
-                                    d: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
-                                  },
-                                }),
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
                               "div",
                               { staticClass: "text-sm truncate ml-2" },
                               [
                                 _vm._v(
-                                  "\n                                " +
-                                    _vm._s(item.created_date) +
-                                    " "
-                                ),
-                                _c("br"),
-                                _vm._v(
-                                  "\n                                " +
-                                    _vm._s(item.created_time) +
-                                    "\n                            "
+                                  "\n                                  \n                                Patient: \n                                " +
+                                    _vm._s(item.customer_name) +
+                                    "\n                                \n                            "
                                 ),
                               ]
                             ),
@@ -67457,21 +67407,9 @@ var render = function () {
                                     ]
                                   ),
                                   _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "text-sm truncate ml-2" },
-                                    [
-                                      _vm._v(
-                                        "\n                                " +
-                                          _vm._s(
-                                            item.plate_number
-                                              ? item.plate_number
-                                              : "-"
-                                          ) +
-                                          "\n                            "
-                                      ),
-                                    ]
-                                  ),
+                                  _c("div", {
+                                    staticClass: "text-sm truncate ml-2",
+                                  }),
                                 ]
                               )
                             : _vm._e(),
