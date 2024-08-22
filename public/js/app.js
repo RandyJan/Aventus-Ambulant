@@ -5004,6 +5004,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -62592,8 +62593,14 @@ var render = function () {
           [
             _vm._v(
               "\n        " +
-                _vm._s(_vm.accountType == 0 ? "Select" : _vm.accountType) +
-                "\n        "
+                _vm._s(
+                  _vm.accountType == 0
+                    ? "Select"
+                    : _vm.accountType == 1
+                    ? "Private"
+                    : "Corporate"
+                ) +
+                "\n        \n        "
             ),
             _vm._v(" "),
             _c(
