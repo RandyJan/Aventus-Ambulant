@@ -47,7 +47,7 @@ import { mapGetters, mapMutations } from "vuex";
         customerName: '',
         isVisible:false,
         accountType:0,
-        accountTypeString: acountType == 1?'Private':accountType == 2 ?'Corporate':"Select"
+        // accountTypeString: acountType == 1?'Private':accountType == 2 ?'Corporate':"Select"
       };
     },
     methods: {

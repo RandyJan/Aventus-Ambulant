@@ -5011,8 +5011,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       orderslipNo: '',
       customerName: '',
       isVisible: false,
-      accountType: 0,
-      accountTypeString: acountType == 1 ? 'Private' : accountType == 2 ? 'Corporate' : "Select"
+      accountType: 0 // accountTypeString: acountType == 1?'Private':accountType == 2 ?'Corporate':"Select"
+
     };
   },
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapMutations)(["open_the_cart"])), {}, {
