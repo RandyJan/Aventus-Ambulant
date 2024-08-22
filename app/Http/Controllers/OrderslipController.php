@@ -101,7 +101,7 @@ class OrderslipController extends Controller
                 'USER_CURRENT_TRANSACTION' => $request->user_id,
                 'BUSDATE' => getClarionDate(now()),
                 'PAID' => 0,
-                'ACCOUNTTYPE' => 0,
+                'ACCOUNTTYPE' => $request->account_type,
 
                 // 'OSTYPE' => config('settings.default_order_type'),
                 // 'SERVICE_CHARGE_AMT' => 0,

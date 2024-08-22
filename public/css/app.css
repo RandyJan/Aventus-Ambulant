@@ -974,14 +974,14 @@ select {
 
 
 
-.z-0 {
-  z-index: 0;
+.z-10 {
+  z-index: 10;
 }
 
 
 
-.z-10 {
-  z-index: 10;
+.z-0 {
+  z-index: 0;
 }
 
 
@@ -1122,6 +1122,18 @@ select {
 
 
 
+.-mr-1 {
+  margin-right: -0.25rem;
+}
+
+
+
+.mt-0 {
+  margin-top: 0px;
+}
+
+
+
 .ml-5 {
   margin-left: 1.25rem;
 }
@@ -1226,12 +1238,6 @@ select {
 
 .mr-1 {
   margin-right: 0.25rem;
-}
-
-
-
-.mt-0 {
-  margin-top: 0px;
 }
 
 
@@ -1434,6 +1440,12 @@ select {
 
 
 
+.w-56 {
+  width: 14rem;
+}
+
+
+
 .w-10 {
   width: 2.5rem;
 }
@@ -1580,6 +1592,12 @@ select {
 
 .border-collapse {
   border-collapse: collapse;
+}
+
+
+
+.origin-top-right {
+  transform-origin: top right;
 }
 
 
@@ -1764,6 +1782,20 @@ select {
 
 .gap-6 {
   gap: 1.5rem;
+}
+
+
+
+.gap-x-0\.5 {
+  -moz-column-gap: 0.125rem;
+       column-gap: 0.125rem;
+}
+
+
+
+.gap-x-0 {
+  -moz-column-gap: 0px;
+       column-gap: 0px;
 }
 
 
@@ -2353,6 +2385,20 @@ select {
 
 
 
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+
+
 .px-2 {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -2381,23 +2427,9 @@ select {
 
 
 
-.py-1 {
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
-}
-
-
-
 .py-3 {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
-}
-
-
-
-.px-3 {
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
 }
 
 
@@ -3061,6 +3093,14 @@ select {
 
 
 
+.shadow-lg {
+  --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+
+
 .shadow-xl {
   --tw-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 20px 25px -5px var(--tw-shadow-color), 0 8px 10px -6px var(--tw-shadow-color);
@@ -3088,6 +3128,19 @@ select {
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
+
+
+.ring-inset {
+  --tw-ring-inset: inset;
+}
+
+
+
+.ring-gray-300 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(209 213 219 / var(--tw-ring-opacity));
 }
 
 
@@ -3234,6 +3287,13 @@ select {
 
 
 
+.hover\:bg-gray-50:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+}
+
+
+
 .hover\:bg-gray-800:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity));
@@ -3244,13 +3304,6 @@ select {
 .hover\:bg-sky-800:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(7 89 133 / var(--tw-bg-opacity));
-}
-
-
-
-.hover\:bg-gray-50:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
 }
 
 

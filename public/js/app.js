@@ -4984,12 +4984,33 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       orderslipNo: '',
-      customerName: ''
+      customerName: '',
+      isVisible: false,
+      accountType: ''
     };
   },
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapMutations)(["open_the_cart"])), {}, {
@@ -5015,6 +5036,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       })["catch"](function (error) {
         _this.orderslips = null;
       });
+    },
+    isOpen: function isOpen() {
+      //         const button = document.getElementById('menu-button');
+      // const dropdown = document.getElementById('dropdown-menu');
+      //   const isOpen = button.getAttribute('aria-expanded') === 'true';
+      //   button.setAttribute('aria-expanded', !isOpen);
+      //   dropdown.classList.add('hidden');
+      this.isVisible = !this.isVisible;
+    },
+    accounTypeFunction: function accounTypeFunction(type) {
+      this.accountType = type;
+      console.log(type);
+      this.isOpen();
     },
     createNewOrderslip: function createNewOrderslip() {
       var _this2 = this;
@@ -5050,6 +5084,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             device_id: _this2.get_auth.terminal.id,
             orderslip_no: _this2.orderslipNo,
             customer_name: _this2.customerName,
+            account_type: _this2.accountType,
             // business_date: this.get_auth.shift.current.business_date,
             user_name: _this2.get_auth.user.name,
             user_id: _this2.get_auth.user.username,
@@ -15918,7 +15953,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.orderslip-form[data-v-45fa9ba2] {\nmax-width: 400px;\nmargin: auto;\npadding: 20px;\nborder: 1px solid #ccc;\nborder-radius: 5px;\n}\n.orderslip-form div[data-v-45fa9ba2] {\nmargin-bottom: 15px;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.orderslip-form[data-v-45fa9ba2] {\nmax-width: 400px;\nmargin: auto;\npadding: 20px;\nborder: 1px solid #ccc;\nborder-radius: 5px;\n}\n.orderslip-form div[data-v-45fa9ba2] {\nmargin-bottom: 15px;\n}\n.test[data-v-45fa9ba2]{\n  margin-top: 0;\n  /* padding-top:0; */\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -62514,6 +62549,112 @@ var render = function () {
       }),
     ]),
     _vm._v(" "),
+    _c("div", { staticClass: "relative inline-block text-left" }, [
+      _c("div", [
+        _c("label", [_vm._v("Account Type:")]),
+        _c("br"),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass:
+              "inline-flex  justify-center gap-x-0.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50",
+            attrs: {
+              type: "button",
+              id: "menu-button",
+              "aria-expanded": "false",
+              "aria-haspopup": "true",
+            },
+            on: { click: _vm.isOpen },
+          },
+          [
+            _vm._v(
+              "\n        " +
+                _vm._s(_vm.accountType == "" ? "Select" : _vm.accountType) +
+                "\n          "
+            ),
+            _c(
+              "svg",
+              {
+                staticClass: "-mr-1 h-5 w-5 text-gray-400",
+                attrs: {
+                  viewBox: "0 0 20 20",
+                  fill: "currentColor",
+                  "aria-hidden": "true",
+                },
+              },
+              [
+                _c("path", {
+                  attrs: {
+                    "fill-rule": "evenodd",
+                    d: "M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z",
+                    "clip-rule": "evenodd",
+                  },
+                }),
+              ]
+            ),
+          ]
+        ),
+      ]),
+      _vm._v(" "),
+      _vm.isVisible
+        ? _c(
+            "div",
+            {
+              staticClass:
+                "absolute mt-0 right-0 z-10 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none ",
+              attrs: {
+                role: "menu",
+                "aria-orientation": "vertical",
+                "aria-labelledby": "menu-button",
+                tabindex: "-1",
+              },
+            },
+            [
+              _c("div", { staticClass: "py-1", attrs: { role: "none" } }, [
+                _c(
+                  "a",
+                  {
+                    staticClass:
+                      "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
+                    attrs: {
+                      role: "menuitem",
+                      tabindex: "-1",
+                      id: "menu-item-0",
+                    },
+                    on: {
+                      click: function ($event) {
+                        return _vm.accounTypeFunction("Private")
+                      },
+                    },
+                  },
+                  [_vm._v("Private")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "a",
+                  {
+                    staticClass:
+                      "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50",
+                    attrs: {
+                      role: "menuitem",
+                      tabindex: "-1",
+                      id: "menu-item-1",
+                    },
+                    on: {
+                      click: function ($event) {
+                        return _vm.accounTypeFunction("Corporate")
+                      },
+                    },
+                  },
+                  [_vm._v("Corporate")]
+                ),
+              ]),
+            ]
+          )
+        : _vm._e(),
+    ]),
+    _vm._v(" "),
     _c("div", [
       _c(
         "button",
@@ -62522,7 +62663,7 @@ var render = function () {
             "ml-5 bg-gray-700 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500",
           on: { click: _vm.createNewOrderslip },
         },
-        [_vm._v("\n      Submit")]
+        [_vm._v("\n        Submit")]
       ),
       _vm._v(" "),
       _c(
