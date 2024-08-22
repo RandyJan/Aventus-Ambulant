@@ -448,14 +448,14 @@
                                     get_current_transaction.time
                                 }}</span>
                             </div>
-                            <div
+                            <!-- <div
                                 v-if="
                                     ['restaurant_ambulant'].includes(
                                         get_settings.app_type
                                     )
                                 "
                                 class="text-sm flex justify-between items-center border-b border-gray-300 py-2"
-                            >
+                            > -->
                                 <!-- <div class="flex items-center">
                                     Table No.
                                     <button
@@ -481,14 +481,14 @@
                                         </svg>
                                     </button>
                                 </div> -->
-                                <span class="font-semibold">
+                                <!-- <span class="font-semibold">
                                     {{
                                         get_current_transaction.table_number
                                             ? get_current_transaction.table_number
                                             : "-"
                                     }}
-                                </span>
-                            </div>
+                                </span> -->
+                            <!-- </div> -->
                             <div
                                 v-if="get_settings.plate_number_entry"
                                 class="text-sm flex justify-between items-center border-b border-gray-300 py-2"
@@ -524,7 +524,7 @@
                                     }}
                                 </span>
                             </div>
-                            <div
+                            <!-- <div
                                 v-if="
                                     [
                                         'shell_ambulant',
@@ -532,7 +532,7 @@
                                     ].includes(get_settings.app_type)
                                 "
                                 class="text-sm flex justify-between items-center border-b border-gray-300 py-2"
-                            >
+                            > -->
                                 <!-- <div class="flex items-center">
                                     Total Head Count
                                     <button
@@ -556,14 +556,14 @@
                                         </svg>
                                     </button>
                                 </div> -->
-                                <span class="font-semibold">
+                                <!-- <span class="font-semibold">
                                     {{
                                         get_current_transaction.total_headcount
                                             ? get_current_transaction.total_headcount
                                             : "-"
                                     }}
-                                </span>
-                            </div>
+                                </span> -->
+                            <!-- </div> -->
                             <div
                                 class="text-sm flex justify-between items-center border-b border-gray-300 py-2"
                             >

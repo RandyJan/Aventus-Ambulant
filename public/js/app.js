@@ -9423,6 +9423,34 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -9632,10 +9660,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     openModalForOSOverview: function openModalForOSOverview(orderslip_code) {
+      console.log(this.get_current_transaction);
       this.$store.dispatch("openOSOverview", orderslip_code);
     }
   }),
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)(["get_auth", "get_device", "if_can_process_order", "get_os_overview_status", "get_settings"])),
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)(["get_auth", "get_device", "if_can_process_order", "get_os_overview_status", "get_settings", "get_current_transaction"])),
   created: function created() {
     // if(this.if_can_process_order == false){
     //     window.location = '/user-info'
@@ -11371,11 +11400,92 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "StoreProduct",
   data: function data() {
     return {
+      isApplyDisc: false,
       main: null,
       non_modifiable: [],
       modifiable: [],
@@ -11396,6 +11506,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   methods: {
     close: function close() {
       this.$store.dispatch("closeProductOverview");
+    },
+    discountBtn: function discountBtn() {
+      this.isApplyDisc = !this.isApplyDisc;
     },
     minusQtySCPWD: function minusQtySCPWD() {
       if (this.sc_count == 0) {
@@ -63612,29 +63725,6 @@ var render = function () {
                     ]
                   ),
                   _vm._v(" "),
-                  ["restaurant_ambulant"].includes(_vm.get_settings.app_type)
-                    ? _c(
-                        "div",
-                        {
-                          staticClass:
-                            "text-sm flex justify-between items-center border-b border-gray-300 py-2",
-                        },
-                        [
-                          _c("span", { staticClass: "font-semibold" }, [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(
-                                  _vm.get_current_transaction.table_number
-                                    ? _vm.get_current_transaction.table_number
-                                    : "-"
-                                ) +
-                                "\n                            "
-                            ),
-                          ]),
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
                   _vm.get_settings.plate_number_entry
                     ? _c(
                         "div",
@@ -63692,32 +63782,6 @@ var render = function () {
                                 _vm._s(
                                   _vm.get_current_transaction.plate_number
                                     ? _vm.get_current_transaction.plate_number
-                                    : "-"
-                                ) +
-                                "\n                            "
-                            ),
-                          ]),
-                        ]
-                      )
-                    : _vm._e(),
-                  _vm._v(" "),
-                  ["shell_ambulant", "restaurant_ambulant"].includes(
-                    _vm.get_settings.app_type
-                  )
-                    ? _c(
-                        "div",
-                        {
-                          staticClass:
-                            "text-sm flex justify-between items-center border-b border-gray-300 py-2",
-                        },
-                        [
-                          _c("span", { staticClass: "font-semibold" }, [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(
-                                  _vm.get_current_transaction.total_headcount
-                                    ? _vm.get_current_transaction
-                                        .total_headcount
                                     : "-"
                                 ) +
                                 "\n                            "
@@ -67111,13 +67175,13 @@ var render = function () {
           ? _c("div", { staticClass: "flex items-center" }, [
               _c("span", { staticClass: "mr-2 text-sm text-gray-700" }, [
                 _vm._v(
-                  "\n                Showing " +
+                  "\n                    Showing " +
                     _vm._s(_vm.orderslips.meta.from) +
-                    " to\n                " +
+                    " to\n                    " +
                     _vm._s(_vm.orderslips.meta.to) +
-                    " of\n                " +
+                    " of\n                    " +
                     _vm._s(_vm.orderslips.meta.total) +
-                    " results\n            "
+                    " results\n                "
                 ),
               ]),
               _vm._v(" "),
@@ -67269,9 +67333,9 @@ var render = function () {
                               { staticClass: "text-white font-bold" },
                               [
                                 _vm._v(
-                                  "\n                            " +
+                                  "\n                                " +
                                     _vm._s(item.orderslip_code) +
-                                    "\n                        "
+                                    "\n                            "
                                 ),
                               ]
                             ),
@@ -67320,13 +67384,36 @@ var render = function () {
                           _vm._v(" "),
                           _c("div", { staticClass: "flex items-start mt-2" }, [
                             _c(
+                              "svg",
+                              {
+                                staticClass: "h-5 w-5",
+                                attrs: {
+                                  xmlns: "http://www.w3.org/2000/svg",
+                                  fill: "none",
+                                  viewBox: "0 0 24 24",
+                                  stroke: "currentColor",
+                                },
+                              },
+                              [
+                                _c("path", {
+                                  attrs: {
+                                    "stroke-linecap": "round",
+                                    "stroke-linejoin": "round",
+                                    "stroke-width": "2",
+                                    d: "M12 14c-3.313 0-6-2.686-6-6s2.687-6 6-6 6 2.686 6 6-2.687 6-6 6zm0 2c3.313 0 6 1.686 6 5v1H6v-1c0-3.314 2.687-5 6-5z",
+                                  },
+                                }),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
                               "div",
                               { staticClass: "text-sm truncate ml-2" },
                               [
                                 _vm._v(
-                                  "\n                                  \n                                Patient: \n                                " +
+                                  "\n                                      \n                                    " +
                                     _vm._s(item.customer_name) +
-                                    "\n                                \n                            "
+                                    "\n                                    \n                                "
                                 ),
                               ]
                             ),
@@ -67365,13 +67452,62 @@ var render = function () {
                                     { staticClass: "text-sm truncate ml-2" },
                                     [
                                       _vm._v(
-                                        "\n                                " +
+                                        "\n                                    " +
                                           _vm._s(
                                             item.terminal != null
                                               ? item.terminal.description
                                               : ""
                                           ) +
-                                          "\n                            "
+                                          "\n                                "
+                                      ),
+                                    ]
+                                  ),
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.get_settings.app_type == "restaurant_ambulant"
+                            ? _c(
+                                "div",
+                                { staticClass: "flex items-center mt-1" },
+                                [
+                                  _c(
+                                    "svg",
+                                    {
+                                      staticClass: "h-5 w-5",
+                                      attrs: {
+                                        xmlns: "http://www.w3.org/2000/svg",
+                                        fill: "none",
+                                        viewBox: "0 0 24 24",
+                                        stroke: "currentColor",
+                                      },
+                                    },
+                                    [
+                                      _c("path", {
+                                        attrs: {
+                                          "stroke-linecap": "round",
+                                          "stroke-linejoin": "round",
+                                          "stroke-width": "2",
+                                          d: "M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z",
+                                        },
+                                      }),
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "text-sm truncate ml-2" },
+                                    [
+                                      _vm._v(
+                                        "\n                                   " +
+                                          _vm._s(item.created_date) +
+                                          " "
+                                      ),
+                                      _c("br"),
+                                      _vm._v(
+                                        "\n                                    " +
+                                          _vm._s(item.created_time) +
+                                          "\n                                "
                                       ),
                                     ]
                                   ),
@@ -67419,42 +67555,9 @@ var render = function () {
                                 "div",
                                 { staticClass: "flex items-center mt-1" },
                                 [
-                                  _c(
-                                    "svg",
-                                    {
-                                      staticClass: "h-5 w-5",
-                                      attrs: {
-                                        xmlns: "http://www.w3.org/2000/svg",
-                                        fill: "none",
-                                        viewBox: "0 0 24 24",
-                                        stroke: "currentColor",
-                                        "stroke-width": "2",
-                                      },
-                                    },
-                                    [
-                                      _c("path", {
-                                        attrs: {
-                                          "stroke-linecap": "round",
-                                          "stroke-linejoin": "round",
-                                          d: "M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4",
-                                        },
-                                      }),
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "div",
-                                    { staticClass: "text-sm truncate ml-2" },
-                                    [
-                                      _vm._v(
-                                        "\n                                " +
-                                          _vm._s(
-                                            item.tables ? item.tables : "n/a"
-                                          ) +
-                                          "\n                            "
-                                      ),
-                                    ]
-                                  ),
+                                  _c("div", {
+                                    staticClass: "text-sm truncate ml-2",
+                                  }),
                                 ]
                               )
                             : _vm._e(),
@@ -67633,13 +67736,13 @@ var render = function () {
             _c("div", { staticClass: "flex items-center" }, [
               _c("span", { staticClass: "mr-2 text-sm text-gray-700" }, [
                 _vm._v(
-                  "\n                Showing " +
+                  "\n                    Showing " +
                     _vm._s(_vm.orderslips.meta.from) +
-                    " to\n                " +
+                    " to\n                    " +
                     _vm._s(_vm.orderslips.meta.to) +
-                    " of\n                " +
+                    " of\n                    " +
                     _vm._s(_vm.orderslips.meta.total) +
-                    " results\n            "
+                    " results\n                "
                 ),
               ]),
               _vm._v(" "),
@@ -67774,7 +67877,7 @@ var render = function () {
             ),
             _vm._v(" "),
             _c("p", { staticClass: "mt-1 text-sm text-gray-500 font-medium" }, [
-              _vm._v("\n            Nothing to display.\n        "),
+              _vm._v("\n                Nothing to display.\n            "),
             ]),
           ])
         : _vm._e(),
@@ -67819,7 +67922,7 @@ var staticRenderFns = [
             "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-sky-700 bg-sky-100 hover:bg-sky-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500",
           attrs: { href: "/AddNewJO" },
         },
-        [_vm._v("\n                New Transaction\n        ")]
+        [_vm._v("\n                    New Transaction\n            ")]
       ),
     ])
   },
@@ -69893,13 +69996,13 @@ var render = function () {
               },
               [
                 _vm._v(
-                  "\n                            " +
+                  "\n                        " +
                     _vm._s(
                       _vm.get_selected_store_product
                         ? _vm.get_selected_store_product.product_description
                         : null
                     ) +
-                    "\n                            "
+                    "\n                        "
                 ),
                 _c("span", { staticClass: "text-red-500" }, [
                   _vm._v(
@@ -69921,13 +70024,13 @@ var render = function () {
               },
               [
                 _vm._v(
-                  "\n                            " +
+                  "\n                        " +
                     _vm._s(
                       _vm.get_selected_store_product
                         ? _vm.get_selected_store_product.retail
                         : null
                     ) +
-                    "\n                        "
+                    "\n                    "
                 ),
               ]
             ),
@@ -69980,9 +70083,9 @@ var render = function () {
                 _vm._v(" "),
                 _c("div", { staticClass: "text-4xl font-medium" }, [
                   _vm._v(
-                    "\n                                " +
+                    "\n                            " +
                       _vm._s(_vm.main.modified_quantity) +
-                      "\n                            "
+                      "\n                        "
                   ),
                 ]),
                 _vm._v(" "),
@@ -70056,7 +70159,7 @@ var render = function () {
                       },
                       [
                         _vm._v(
-                          "\n                                    Headcount Configuration\n                                "
+                          "\n                                Headcount Configuration\n                            "
                         ),
                       ]
                     ),
@@ -70112,9 +70215,9 @@ var render = function () {
                         _vm._v(" "),
                         _c("div", { staticClass: "text-4xl font-medium" }, [
                           _vm._v(
-                            "\n                                        " +
+                            "\n                                    " +
                               _vm._s(_vm.sc_count) +
-                              "\n                                    "
+                              "\n                                "
                           ),
                         ]),
                         _vm._v(" "),
@@ -70161,11 +70264,11 @@ var render = function () {
                     _c("div", { staticClass: "text-center text-xs mt-1" }, [
                       _c("span", { staticClass: "italic" }, [
                         _vm._v(
-                          "\n                                        Senior Headcount (" +
+                          "\n                                    Senior Headcount (" +
                             _vm._s(_vm.sc_records.length)
                         ),
                         _c("small", [_vm._v("max")]),
-                        _vm._v(")\n                                    "),
+                        _vm._v(")\n                                "),
                       ]),
                     ]),
                   ]),
@@ -70198,7 +70301,7 @@ var render = function () {
                       },
                       [
                         _vm._v(
-                          "\n                                    Non Modifiable Components\n                                "
+                          "\n                                Non Modifiable Components\n                            "
                         ),
                       ]
                     ),
@@ -70218,13 +70321,13 @@ var render = function () {
                       },
                       [
                         _vm._v(
-                          "\n                                " +
+                          "\n                            " +
                             _vm._s(item.child_description) +
-                            "\n                                "
+                            "\n                            "
                         ),
                         _c("small", { staticClass: "ml-2 font-normal" }, [
                           _vm._v(
-                            "quantity\n                                    " +
+                            "quantity\n                                " +
                               _vm._s(item.modified_quantity)
                           ),
                         ]),
@@ -70264,7 +70367,7 @@ var render = function () {
                         },
                         [
                           _vm._v(
-                            "\n                                    Modifiable Components\n                                "
+                            "\n                                Modifiable Components\n                            "
                           ),
                         ]
                       ),
@@ -70284,13 +70387,13 @@ var render = function () {
                           },
                           [
                             _vm._v(
-                              "\n                                " +
+                              "\n                            " +
                                 _vm._s(item.child_description) +
-                                "\n                                "
+                                "\n                            "
                             ),
                             _c("small", { staticClass: "ml-2 font-normal" }, [
                               _vm._v(
-                                "quantity\n                                    " +
+                                "quantity\n                                " +
                                   _vm._s(item.modified_quantity)
                               ),
                             ]),
@@ -70372,11 +70475,11 @@ var render = function () {
                                             },
                                             [
                                               _vm._v(
-                                                "\n                                                " +
+                                                "\n                                            " +
                                                   _vm._s(
                                                     sub_item.modified_quantity
                                                   ) +
-                                                  "\n                                            "
+                                                  "\n                                        "
                                               ),
                                             ]
                                           ),
@@ -70435,11 +70538,11 @@ var render = function () {
                                         [
                                           _c("div", [
                                             _vm._v(
-                                              "\n                                                " +
+                                              "\n                                            " +
                                                 _vm._s(
                                                   sub_item.product_description
                                                 ) +
-                                                "\n                                            "
+                                                "\n                                        "
                                             ),
                                           ]),
                                           _vm._v(" "),
@@ -70451,13 +70554,13 @@ var render = function () {
                                             },
                                             [
                                               _vm._v(
-                                                "\n                                                " +
+                                                "\n                                            " +
                                                   _vm._s(
                                                     sub_item.retail_price.toFixed(
                                                       2
                                                     )
                                                   ) +
-                                                  "\n                                            "
+                                                  "\n                                        "
                                               ),
                                             ]
                                           ),
@@ -70472,14 +70575,14 @@ var render = function () {
                                         },
                                         [
                                           _vm._v(
-                                            "\n                                            " +
+                                            "\n                                        " +
                                               _vm._s(
                                                 (
                                                   sub_item.retail_price *
                                                   sub_item.modified_quantity
                                                 ).toFixed(2)
                                               ) +
-                                              "\n                                        "
+                                              "\n                                    "
                                           ),
                                         ]
                                       ),
@@ -70508,25 +70611,25 @@ var render = function () {
               },
               [
                 _vm._v(
-                  "\n                            " +
+                  "\n                        " +
                     _vm._s(
                       _vm.get_settings.app_type == "invoicer_ambulant"
                         ? "IMEI"
                         : ""
                     ) +
-                    "\n                            " +
+                    "\n                        " +
                     _vm._s(
                       _vm.get_settings.app_type == "restaurant_ambulant"
                         ? "Add notes"
                         : ""
                     ) +
-                    "\n                            " +
+                    "\n                        " +
                     _vm._s(
                       _vm.get_settings.app_type == "shell_ambulant"
                         ? "Add notes"
                         : ""
                     ) +
-                    "\n                        "
+                    "\n                    "
                 ),
               ]
             ),
@@ -70589,7 +70692,7 @@ var render = function () {
                           },
                           [
                             _vm._v(
-                              "\n                                        VATable Sales\n                                    "
+                              "\n                                    VATable Sales\n                                "
                             ),
                           ]
                         ),
@@ -70602,9 +70705,9 @@ var render = function () {
                           },
                           [
                             _vm._v(
-                              "\n                                        " +
+                              "\n                                    " +
                                 _vm._s(_vm.vatable_sales.toFixed(2)) +
-                                "\n                                    "
+                                "\n                                "
                             ),
                           ]
                         ),
@@ -70643,7 +70746,7 @@ var render = function () {
                           },
                           [
                             _vm._v(
-                              "\n                                        VAT Amount\n                                    "
+                              "\n                                    VAT Amount\n                                "
                             ),
                           ]
                         ),
@@ -70656,9 +70759,9 @@ var render = function () {
                           },
                           [
                             _vm._v(
-                              "\n                                        " +
+                              "\n                                    " +
                                 _vm._s(_vm.vat_amount.toFixed(2)) +
-                                "\n                                    "
+                                "\n                                "
                             ),
                           ]
                         ),
@@ -70697,7 +70800,7 @@ var render = function () {
                           },
                           [
                             _vm._v(
-                              "\n                                        VAT Ex.\n                                    "
+                              "\n                                    VAT Ex.\n                                "
                             ),
                           ]
                         ),
@@ -70710,9 +70813,9 @@ var render = function () {
                           },
                           [
                             _vm._v(
-                              "\n                                        " +
+                              "\n                                    " +
                                 _vm._s(_vm.vat_ex.toFixed(2)) +
-                                "\n                                    "
+                                "\n                                "
                             ),
                           ]
                         ),
@@ -70751,9 +70854,9 @@ var render = function () {
                           },
                           [
                             _vm._v(
-                              "\n                                        SC/PWD Discount\n                                        " +
+                              "\n                                    SC/PWD Discount\n                                    " +
                                 _vm._s(_vm.sc_discount_percentage) +
-                                "%\n                                    "
+                                "%\n                                "
                             ),
                           ]
                         ),
@@ -70766,9 +70869,9 @@ var render = function () {
                           },
                           [
                             _vm._v(
-                              "\n                                        " +
+                              "\n                                    " +
                                 _vm._s(_vm.sc_discount_amount.toFixed(2)) +
-                                "\n                                    "
+                                "\n                                "
                             ),
                           ]
                         ),
@@ -70798,9 +70901,9 @@ var render = function () {
               },
               [
                 _vm._v(
-                  "\n                            Add to Cart - " +
+                  "\n                        Add to Cart - " +
                     _vm._s(_vm.net_amount.toFixed(2)) +
-                    "\n                        "
+                    "\n                    "
                 ),
               ]
             ),
@@ -70809,7 +70912,7 @@ var render = function () {
               "button",
               {
                 staticClass:
-                  "mt-2 w-full justify-center inline-flex items-center px-4 py-3 border border-transparent text-sm leading-4 font-semibold rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 tracking-wide",
+                  "mt-2 w-full justify-center inline-flex items-center px-4 py-3 border \n                    border-transparent text-sm leading-4 font-semibold rounded-md shadow-sm text-white\n                     focus:outline-none focus:ring-2 focus:ring-offset-2 tracking-wide",
                 class: {
                   "bg-blue-600 hover:bg-blue-700 focus:ring-blue-500":
                     _vm.main.modified_quantity > 0,
@@ -70817,13 +70920,364 @@ var render = function () {
                     _vm.main.modified_quantity <= 0,
                 },
                 attrs: { type: "button", "data-bs-toggle": "modal" },
+                on: {
+                  click: function ($event) {
+                    return _vm.discountBtn()
+                  },
+                },
               },
               [
                 _vm._v(
-                  "\n                           Apply Discount\n                        "
+                  "\n                        Apply Discount\n                    "
                 ),
               ]
             ),
+            _vm._v(" "),
+            _vm.isApplyDisc
+              ? _c(
+                  "div",
+                  {
+                    staticClass: "relative z-10",
+                    attrs: {
+                      "aria-labelledby": "modal-title",
+                      role: "dialog",
+                      "aria-modal": "true",
+                    },
+                  },
+                  [
+                    _c("div", {
+                      staticClass:
+                        "fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity",
+                      attrs: { "aria-hidden": "true" },
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass:
+                          "fixed inset-0 z-10 w-screen overflow-y-auto",
+                      },
+                      [
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0",
+                          },
+                          [
+                            _c(
+                              "div",
+                              {
+                                staticClass:
+                                  "relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg",
+                              },
+                              [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4",
+                                  },
+                                  [
+                                    _c(
+                                      "div",
+                                      { staticClass: "sm:flex sm:items-start" },
+                                      [
+                                        _c(
+                                          "div",
+                                          {
+                                            staticClass:
+                                              "mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left",
+                                          },
+                                          [
+                                            _c(
+                                              "h3",
+                                              {
+                                                staticClass:
+                                                  "py-4 px-6 text-left text-gray-600 font-bold uppercase",
+                                                attrs: { id: "modal-title" },
+                                              },
+                                              [_vm._v("Item Discount")]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "div",
+                                              {
+                                                staticClass:
+                                                  " rounded-lg overflow-hidden mx-4 md:mx-0",
+                                              },
+                                              [
+                                                _c(
+                                                  "table",
+                                                  {
+                                                    staticClass:
+                                                      "w-full table-fixed",
+                                                  },
+                                                  [
+                                                    _c("thead", [
+                                                      _c(
+                                                        "tr",
+                                                        {
+                                                          staticClass:
+                                                            "bg-gray-100",
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "th",
+                                                            {
+                                                              staticClass:
+                                                                "w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase",
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "\n                                                                    Discount"
+                                                              ),
+                                                            ]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "th",
+                                                            {
+                                                              staticClass:
+                                                                "w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase",
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "\n                                                                    Value"
+                                                              ),
+                                                            ]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "th",
+                                                            {
+                                                              staticClass:
+                                                                "w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase",
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "\n                                                                    isPercent"
+                                                              ),
+                                                            ]
+                                                          ),
+                                                        ]
+                                                      ),
+                                                    ]),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "tbody",
+                                                      {
+                                                        staticClass: "bg-white",
+                                                      },
+                                                      [
+                                                        _c("tr", [
+                                                          _c(
+                                                            "td",
+                                                            {
+                                                              staticClass:
+                                                                "py-4 px-6 border-b border-gray-200",
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "John\n                                                                    Doe"
+                                                              ),
+                                                            ]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "td",
+                                                            {
+                                                              staticClass:
+                                                                "py-4 px-6 border-b border-gray-200 truncate",
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "\n                                                                    johndoe@gmail.com"
+                                                              ),
+                                                            ]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "td",
+                                                            {
+                                                              staticClass:
+                                                                "py-4 px-6 border-b border-gray-200",
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "\n                                                                    555-555-5555"
+                                                              ),
+                                                            ]
+                                                          ),
+                                                        ]),
+                                                        _vm._v(" "),
+                                                        _c("tr", [
+                                                          _c(
+                                                            "td",
+                                                            {
+                                                              staticClass:
+                                                                "py-4 px-6 border-b border-gray-200",
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "Jane\n                                                                    Doe"
+                                                              ),
+                                                            ]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "td",
+                                                            {
+                                                              staticClass:
+                                                                "py-4 px-6 border-b border-gray-200 truncate",
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "\n                                                                    janedoe@gmail.com"
+                                                              ),
+                                                            ]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "td",
+                                                            {
+                                                              staticClass:
+                                                                "py-4 px-6 border-b border-gray-200",
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "\n                                                                    555-555-5555"
+                                                              ),
+                                                            ]
+                                                          ),
+                                                        ]),
+                                                        _vm._v(" "),
+                                                        _c("tr", [
+                                                          _c(
+                                                            "td",
+                                                            {
+                                                              staticClass:
+                                                                "py-4 px-6 border-b border-gray-200",
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "Jane\n                                                                    Doe"
+                                                              ),
+                                                            ]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "td",
+                                                            {
+                                                              staticClass:
+                                                                "py-4 px-6 border-b border-gray-200 truncate",
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "\n                                                                    janedoe@gmail.com"
+                                                              ),
+                                                            ]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "td",
+                                                            {
+                                                              staticClass:
+                                                                "py-4 px-6 border-b border-gray-200",
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "\n                                                                    555-555-5555"
+                                                              ),
+                                                            ]
+                                                          ),
+                                                        ]),
+                                                        _vm._v(" "),
+                                                        _c("tr", [
+                                                          _c(
+                                                            "td",
+                                                            {
+                                                              staticClass:
+                                                                "py-4 px-6 border-b border-gray-200",
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "Jane\n                                                                    Doe"
+                                                              ),
+                                                            ]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "td",
+                                                            {
+                                                              staticClass:
+                                                                "py-4 px-6 border-b border-gray-200 truncate",
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "\n                                                                    janedoe@gmail.com"
+                                                              ),
+                                                            ]
+                                                          ),
+                                                          _vm._v(" "),
+                                                          _c(
+                                                            "td",
+                                                            {
+                                                              staticClass:
+                                                                "py-4 px-6 border-b border-gray-200",
+                                                            },
+                                                            [
+                                                              _vm._v(
+                                                                "\n                                                                    555-555-5555"
+                                                              ),
+                                                            ]
+                                                          ),
+                                                        ]),
+                                                      ]
+                                                    ),
+                                                  ]
+                                                ),
+                                              ]
+                                            ),
+                                          ]
+                                        ),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6",
+                                  },
+                                  [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass:
+                                          "inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto",
+                                        attrs: { type: "button" },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.discountBtn()
+                                          },
+                                        },
+                                      },
+                                      [_vm._v("Cancel")]
+                                    ),
+                                  ]
+                                ),
+                              ]
+                            ),
+                          ]
+                        ),
+                      ]
+                    ),
+                  ]
+                )
+              : _vm._e(),
           ]),
         ]),
       ]),

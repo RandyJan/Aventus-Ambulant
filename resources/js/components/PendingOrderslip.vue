@@ -198,25 +198,24 @@
 
                             <!-- DATE & TIME -->
                             <div class="flex items-start mt-2">
-                                <!-- <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    class="h-5 w-5"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                                    />
-                                </svg> -->
+                                <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="h-5 w-5"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+>
+    <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M12 14c-3.313 0-6-2.686-6-6s2.687-6 6-6 6 2.686 6 6-2.687 6-6 6zm0 2c3.313 0 6 1.686 6 5v1H6v-1c0-3.314 2.687-5 6-5z"
+    />
+</svg>
                                 <div class="text-sm truncate ml-2">
                                     <!-- {{ item.created_date }} <br /> -->
                                     <!-- {{ item.created_time }} -->
                                       
-                                    Patient: 
                                     {{ item.customer_name }}
                                     
                                 </div>
@@ -250,6 +249,33 @@
                                             ? item.terminal.description
                                             : ""
                                     }}
+                                </div>
+                            </div>
+                                <!-- DATE -->
+                                <div
+                                v-if="
+                                    get_settings.app_type ==
+                                    'restaurant_ambulant'
+                                "
+                                class="flex items-center mt-1"
+                            >
+                            <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="h-5 w-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                                    />
+                                </svg> 
+                                <div class="text-sm truncate ml-2">
+                                   {{ item.created_date }} <br />
+                                    {{ item.created_time }}
                                 </div>
                             </div>
 
@@ -291,7 +317,7 @@
                                 "
                                 class="flex items-center mt-1"
                             >
-                                <svg
+                                <!-- <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     class="h-5 w-5"
                                     fill="none"
@@ -304,9 +330,11 @@
                                         stroke-linejoin="round"
                                         d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
                                     />
-                                </svg>
+                                </svg> -->
+                        <!-- Procedure/s: {{item}} -->
                                 <div class="text-sm truncate ml-2">
-                                    {{ item.tables ? item.tables : "n/a" }}
+                                    <!-- {{ item.length}} -->
+                                      
                                 </div>
                             </div>
                         </div>
@@ -726,6 +754,7 @@ export default {
             });
         },
         openModalForOSOverview(orderslip_code) {
+            console.log(this.get_current_transaction);
             this.$store.dispatch("openOSOverview", orderslip_code);
         },
     },
@@ -736,6 +765,7 @@ export default {
             "if_can_process_order",
             "get_os_overview_status",
             "get_settings",
+            "get_current_transaction"
         ]),
     },
     created() {

@@ -14,8 +14,8 @@
                     <div
                         class="shadow-sm group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
                         <img :src="get_selected_store_product
-                                ? get_selected_store_product.img_path
-                                : null
+                            ? get_selected_store_product.img_path
+                            : null
                             " onerror="this.onerror=null;this.src='/assets/default-product.png';"
                             class="h-56 w-full object-cover pointer-events-none group-hover:opacity-75" alt="" />
                     </div>
@@ -334,55 +334,138 @@
                             class="mt-4 w-full justify-center inline-flex items-center px-4 py-3 border border-transparent text-sm leading-4 font-semibold rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 tracking-wide">
                             Add to Cart - {{ net_amount.toFixed(2) }}
                         </button>
-                        <button type="button" :class="{
+                        <button @click="closeDisc()" type="button" :class="{
                             'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500':
                                 main.modified_quantity > 0,
                             'bg-gray-600 hover:bg-gray-700 focus:ring-gray-500':
                                 main.modified_quantity <= 0,
-                        }"
-                        class="mt-2 w-full justify-center inline-flex items-center px-4 py-3 border border-transparent text-sm leading-4 font-semibold rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 tracking-wide"
-                        data-bs-toggle="modal" >
-                           Apply Discount
+                        }" class="mt-2 w-full justify-center inline-flex items-center px-4 py-3 border 
+                        border-transparent text-sm leading-4 font-semibold rounded-md shadow-sm text-white
+                         focus:outline-none focus:ring-2 focus:ring-offset-2 tracking-wide" data-bs-toggle="modal">
+                            Apply Discount
                         </button>
-                        <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div> -->
-  </div>
-</div>
+                        <!-- modal -->
+                        <div v-if="isApplyDisc" class="relative z-10" aria-labelledby="modal-title" role="dialog"
+                            aria-modal="true">
+
+                            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true">
+                            </div>
+
+                            <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+                                <div
+                                    class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+
+                                    <div
+                                        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                                        <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                            <div class="sm:flex sm:items-start">
+                                                <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                                                    <h3 class="py-4 px-6 text-left text-gray-600 font-bold uppercase"
+                                                        id="modal-title">Item Discount</h3>
+
+
+                                                    <div class=" rounded-lg overflow-hidden mx-4 md:mx-0">
+                                                        <table class="w-full table-fixed">
+                                                            <thead>
+                                                                <tr class="bg-gray-100">
+                                                                    <th
+                                                                        class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">
+                                                                        Discount</th>
+                                                                    <th
+                                                                        class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">
+                                                                        Value</th>
+                                                                    <th
+                                                                        class="w-1/4 py-4 px-6 text-left text-gray-600 font-bold uppercase">
+                                                                        isPercent</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="bg-white">
+                                                                <tr>
+                                                                    <td class="py-4 px-6 border-b border-gray-200">John
+                                                                        Doe</td>
+                                                                    <td
+                                                                        class="py-4 px-6 border-b border-gray-200 truncate">
+                                                                        johndoe@gmail.com</td>
+                                                                    <td class="py-4 px-6 border-b border-gray-200">
+                                                                        555-555-5555</td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="py-4 px-6 border-b border-gray-200">Jane
+                                                                        Doe</td>
+                                                                    <td
+                                                                        class="py-4 px-6 border-b border-gray-200 truncate">
+                                                                        janedoe@gmail.com</td>
+                                                                    <td class="py-4 px-6 border-b border-gray-200">
+                                                                        555-555-5555</td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="py-4 px-6 border-b border-gray-200">Jane
+                                                                        Doe</td>
+                                                                    <td
+                                                                        class="py-4 px-6 border-b border-gray-200 truncate">
+                                                                        janedoe@gmail.com</td>
+                                                                    <td class="py-4 px-6 border-b border-gray-200">
+                                                                        555-555-5555</td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td class="py-4 px-6 border-b border-gray-200">Jane
+                                                                        Doe</td>
+                                                                    <td
+                                                                        class="py-4 px-6 border-b border-gray-200 truncate">
+                                                                        janedoe@gmail.com</td>
+                                                                    <td class="py-4 px-6 border-b border-gray-200">
+                                                                        555-555-5555</td>
+
+                                                                </tr>
+                                                                <!-- Add more rows here -->
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <!-- </div> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                                            <button type="button"
+                                                class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
+                                                @click="discountBtn()">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      
-         
+                        <!-- end -->
+                    </div>
+
+
                 </div>
             </div>
-        
         </div>
-       
+
+
+
+
+
     </transition>
-     
+
 </template>
 
 <script>
 import { mapGetters } from "vuex";
 export default {
     name: "StoreProduct",
+
     data() {
         return {
+            isApplyDisc: false,
             main: null,
             non_modifiable: [],
             modifiable: [],
             sc_records: [],
+            discounts:[],
             sc_count: 0,
             tax_and_discount_template: {
                 service_charge: false,
@@ -400,6 +483,36 @@ export default {
     methods: {
         close() {
             this.$store.dispatch("closeProductOverview");
+        },
+        closeDisc(){
+            this.isApplyDisc = !this.isApplyDisc;
+            
+        },
+        discountBtn() {
+            this.isApplyDisc = !this.isApplyDisc;
+            axios
+                        .get(`/getDiscounts`, {
+                            orderslip_number:
+                                this.get_current_transaction.orderslip_number,
+                            product: this.main,
+                            notes: this.main.notes,
+                            non_modifiable: this.non_modifiable,
+                            modifiable: this.modifiable,
+                            senior_headcount: this.sc_count,
+                            // regular_headcount: this.regular_headcount,
+                        })
+                        .then((res) => {
+                            this.discounts = res;
+                            // toast.fire({
+                            //     title: "Successfully added",
+                            // });
+                        })
+                        .catch((error) => {
+                            toast.fire({
+                                icon: "warning",
+                                title: error.response.data.message,
+                            });
+                        });
         },
         minusQtySCPWD() {
             if (this.sc_count == 0) {
@@ -917,6 +1030,7 @@ export default {
             );
         },
     },
+
     created() {
         if (this.get_settings.service_charge == true) {
             console.log("service charge is enable...");
@@ -945,6 +1059,7 @@ export default {
             });
         });
     },
+
 };
 </script>
 
