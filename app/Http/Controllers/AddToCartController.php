@@ -17,19 +17,20 @@ class AddToCartController extends Controller
         $this->updateOrderslipTotalService = new UpdateOrderslipTotalService;
     }
 
-    public function addToCart(Request $request){
-        try{
+    public function addToCart(Request $request)
+    {
+        try {
             DB::beginTransaction();
 
             $os = OrderSlipHeader::where('OSNUMBER', $request->orderslip_number)->first();
-            if(!$os){
+            if (!$os) {
                 DB::rollBack();
                 return response()->json([
                     'message' => 'OS Not Found',
                 ], 400);
             }
 
-            if($os->PAID == 1){
+            if ($os->PAID == 1) {
                 return response()->json([
                     'message' => 'This Transaction is already paid!, please create another transaction to continue.',
                 ], 400);
@@ -66,7 +67,7 @@ class AddToCartController extends Controller
                 'POSLINENO' => $line_number,
                 'MAIN_PRODUCT_ID' => $request->product['product_id'],
                 'OS_SC_ID' => $request->os_sc_id,
-                'DISCOUNTID'=>$request->product['discId'],
+                'DISCID' => $request->product['discId'],
 
                 'VATABLE_SALES' => round($request->product['vatable_sales'], 5),
                 'VAT_AMOUNT' => round($request->product['vat_amount'], 5),
@@ -114,7 +115,8 @@ class AddToCartController extends Controller
                     'MAIN_PRODUCT_COMPONENT_ID' => $item['child_product_id'],
                     'PRODUCTGROUP' => $item['location'],
                     'OS_SC_ID' => $request->os_sc_id,
-                    'DISCOUNTID'=>$request->product['discId'],
+                    'DISCID' => $request->product['discId'],
+
 
                     'VATABLE_SALES' => 0,
                     'VAT_AMOUNT' => 0,
@@ -128,7 +130,7 @@ class AddToCartController extends Controller
 
             foreach ($request['modifiable'] as $key => $item) {
                 # code...
-                if($item['modified_quantity'] > 0){
+                if ($item['modified_quantity'] > 0) {
                     OrderSlipDetail::create([
                         'ORDERSLIPDETAILID' => OrderSlipDetail::getNewDetailId($os->OSNUMBER),
                         'ORDERSLIPNO' => $os->ORDERSLIPNO,
@@ -161,7 +163,8 @@ class AddToCartController extends Controller
                         'OS_SC_ID' => $request->os_sc_id,
                         'IS_MODIFY' => 1,
                         'POSTMIXID' => $request->product['product_id'],
-                        'DISCOUNTID'=>$request->product['discId'],
+                        'DISCID' => $request->product['discId'],
+
 
 
                         'VATABLE_SALES' => 0,
@@ -177,7 +180,7 @@ class AddToCartController extends Controller
 
                 foreach ($item['group_products'] as $key => $sub_item) {
                     # code...
-                    if($sub_item['modified_quantity'] > 0){
+                    if ($sub_item['modified_quantity'] > 0) {
                         OrderSlipDetail::create([
                             'ORDERSLIPDETAILID' => OrderSlipDetail::getNewDetailId($os->OSNUMBER),
                             'ORDERSLIPNO' => $os->ORDERSLIPNO,
@@ -210,7 +213,7 @@ class AddToCartController extends Controller
                             'OS_SC_ID' => $request->os_sc_id,
                             'IS_MODIFY' => 1,
                             'POSTMIXID' => $request->product['product_id'],
-                'DISCOUNTID'=>$request->product['discId'],
+                            'DISCID' => $request->product['discId'],
 
                             'VATABLE_SALES' => round($sub_item['vatable_sales'], 5),
                             'VAT_AMOUNT' => round($sub_item['vat_amount'], 5),
@@ -225,13 +228,13 @@ class AddToCartController extends Controller
                 }
             }
 
-            $this->updateOrderslipTotalService->handle( $request->orderslip_number );
+            $this->updateOrderslipTotalService->handle($request->orderslip_number);
 
             DB::commit();
             return response()->json([
                 'message' => 'Update Successfully',
             ]);
-        }catch(Exception $e){
+        } catch (Exception $e) {
             DB::rollBack();
             return response()->json([
                 'message' => 'SERVER ERROR',

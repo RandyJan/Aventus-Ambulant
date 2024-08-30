@@ -63,10 +63,11 @@ class OrderSlipDetail extends Model
         'VAT_EX',
         'IS_GROUP_MEAL',
         'GROUP_SERVING',
-        'DISCOUNTID',
+        'DISCID',
         'CONFIRMED_AT',     // identifier for confirmed order
         'PRODUCTGROUP',
         'PSTATUS',          // identifier for confirmed order
+        
     ];
 
     /**
