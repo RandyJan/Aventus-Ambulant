@@ -66,6 +66,7 @@ class AddToCartController extends Controller
                 'POSLINENO' => $line_number,
                 'MAIN_PRODUCT_ID' => $request->product['product_id'],
                 'OS_SC_ID' => $request->os_sc_id,
+                'DISCOUNTID'=>$request->product['discId'],
 
                 'VATABLE_SALES' => round($request->product['vatable_sales'], 5),
                 'VAT_AMOUNT' => round($request->product['vat_amount'], 5),
@@ -113,6 +114,7 @@ class AddToCartController extends Controller
                     'MAIN_PRODUCT_COMPONENT_ID' => $item['child_product_id'],
                     'PRODUCTGROUP' => $item['location'],
                     'OS_SC_ID' => $request->os_sc_id,
+                    'DISCOUNTID'=>$request->product['discId'],
 
                     'VATABLE_SALES' => 0,
                     'VAT_AMOUNT' => 0,
@@ -159,6 +161,8 @@ class AddToCartController extends Controller
                         'OS_SC_ID' => $request->os_sc_id,
                         'IS_MODIFY' => 1,
                         'POSTMIXID' => $request->product['product_id'],
+                        'DISCOUNTID'=>$request->product['discId'],
+
 
                         'VATABLE_SALES' => 0,
                         'VAT_AMOUNT' => 0,
@@ -206,6 +210,7 @@ class AddToCartController extends Controller
                             'OS_SC_ID' => $request->os_sc_id,
                             'IS_MODIFY' => 1,
                             'POSTMIXID' => $request->product['product_id'],
+                'DISCOUNTID'=>$request->product['discId'],
 
                             'VATABLE_SALES' => round($sub_item['vatable_sales'], 5),
                             'VAT_AMOUNT' => round($sub_item['vat_amount'], 5),

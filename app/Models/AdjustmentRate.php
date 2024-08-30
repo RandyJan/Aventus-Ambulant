@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class AdjustmentRate extends Model
 {
     use HasFactory;
-    protected $table = "adjustmentRate";
+    protected $table = "AdjustmentRate";
+    protected $connection = "datalogic";
 }

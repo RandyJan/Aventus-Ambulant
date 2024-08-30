@@ -270,7 +270,9 @@
 
                     <div class="mt-4 border-t">
                         <div class="">
-                            <div v-if="vatable_sales > 0" class="relative">
+                            <!-- <div v-if="vatable_sales > 0" class="relative"> -->
+                            <div  class="relative">
+
                                 <div class="absolute inset-0 flex items-center" aria-hidden="true">
                                     <div class="w-full border-t border-gray-300"></div>
                                 </div>
@@ -283,7 +285,9 @@
                                     </span>
                                 </div>
                             </div>
-                            <div v-if="vat_amount > 0" class="relative">
+                            <!-- <div v-if="vat_amount > 0" class="relative"> -->
+                            <div class="relative">
+
                                 <div class="absolute inset-0 flex items-center" aria-hidden="true">
                                     <div class="w-full border-t border-gray-300"></div>
                                 </div>
@@ -296,7 +300,9 @@
                                     </span>
                                 </div>
                             </div>
-                            <div v-if="vat_ex > 0" class="relative">
+                            <!-- <div v-if="vat_ex > 0" class="relative"> -->
+                            <div  class="relative">
+
                                 <div class="absolute inset-0 flex items-center" aria-hidden="true">
                                     <div class="w-full border-t border-gray-300"></div>
                                 </div>
@@ -309,7 +315,22 @@
                                     </span>
                                 </div>
                             </div>
-                            <div v-if="sc_discount_amount > 0" class="relative">
+                            <div  class="relative">
+
+<div class="absolute inset-0 flex items-center" aria-hidden="true">
+    <div class="w-full border-t border-gray-300"></div>
+</div>
+<div class="relative flex items-center justify-between">
+    <span class="pr-3 bg-gray-100 text-sm font-medium text-gray-700">
+        Discount
+    </span>
+    <span class="pr-3 pl-2 bg-gray-100 text-sm font-medium text-gray-700">
+        {{ sc_discount_amount.toFixed(2) }}
+    </span>
+</div>
+</div>
+
+                            <!-- <div v-if="sc_discount_amount > 0" class="relative">
                                 <div class="absolute inset-0 flex items-center" aria-hidden="true">
                                     <div class="w-full border-t border-gray-300"></div>
                                 </div>
@@ -322,7 +343,7 @@
                                         {{ sc_discount_amount.toFixed(2) }}
                                     </span>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
 
                         <button @click="submit()" type="button" :class="{
@@ -334,7 +355,7 @@
                             class="mt-4 w-full justify-center inline-flex items-center px-4 py-3 border border-transparent text-sm leading-4 font-semibold rounded-md shadow-sm text-white focus:outline-none focus:ring-2 focus:ring-offset-2 tracking-wide">
                             Add to Cart - {{ net_amount.toFixed(2) }}
                         </button>
-                        <button @click="closeDisc()" type="button" :class="{
+                        <button @click=" discountBtn()" type="button" :class="{
                             'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500':
                                 main.modified_quantity > 0,
                             'bg-gray-600 hover:bg-gray-700 focus:ring-gray-500':
@@ -345,7 +366,7 @@
                             Apply Discount
                         </button>
                         <!-- modal -->
-                        <div v-if="isApplyDisc" class="relative z-10" aria-labelledby="modal-title" role="dialog"
+                        <div v-if="isApplyDisc" class="relative z-10 " aria-labelledby="modal-title" role="dialog"
                             aria-modal="true">
 
                             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true">
@@ -356,16 +377,17 @@
                                     class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
 
                                     <div
-                                        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                                        <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                        class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl 
+                                        transition-all sm:my-8  w-2/3 ">
+                                        <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 w-full">
                                             <div class="sm:flex sm:items-start">
                                                 <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                                                     <h3 class="py-4 px-6 text-left text-gray-600 font-bold uppercase"
                                                         id="modal-title">Item Discount</h3>
 
 
-                                                    <div class=" rounded-lg overflow-hidden mx-4 md:mx-0">
-                                                        <table class="w-full table-fixed">
+                                                    <div class=" rounded-lg overflow-hidden mx-4 md:mx-0 mytbl-cont">
+                                                        <table class="w-full table-fixed ">
                                                             <thead>
                                                                 <tr class="bg-gray-100">
                                                                     <th
@@ -380,46 +402,23 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody class="bg-white">
-                                                                <tr>
-                                                                    <td class="py-4 px-6 border-b border-gray-200">John
-                                                                        Doe</td>
+                                                                <tr v-for=" (item,index) in discounts"
+                                                                 :key=index
+                                                                 class="hover:bg-gray-200 hover:cursor-pointer"
+                                                                 @click="computeDiscount(item.VALUE,item.ISPERCENT,item.ID)"
+
+                                                                 >
+                                                                    <td class="py-4 px-6 border-b border-gray-200">{{item.SHORTDESCRIPTION}}
+
+                                                                    </td>
                                                                     <td
                                                                         class="py-4 px-6 border-b border-gray-200 truncate">
-                                                                        johndoe@gmail.com</td>
+                                                                        {{ item.VALUE }}</td>
                                                                     <td class="py-4 px-6 border-b border-gray-200">
-                                                                        555-555-5555</td>
+                                                                        {{ item.ISPERCENT == 1? "YES":"NO" }}</td>
 
                                                                 </tr>
-                                                                <tr>
-                                                                    <td class="py-4 px-6 border-b border-gray-200">Jane
-                                                                        Doe</td>
-                                                                    <td
-                                                                        class="py-4 px-6 border-b border-gray-200 truncate">
-                                                                        janedoe@gmail.com</td>
-                                                                    <td class="py-4 px-6 border-b border-gray-200">
-                                                                        555-555-5555</td>
-
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="py-4 px-6 border-b border-gray-200">Jane
-                                                                        Doe</td>
-                                                                    <td
-                                                                        class="py-4 px-6 border-b border-gray-200 truncate">
-                                                                        janedoe@gmail.com</td>
-                                                                    <td class="py-4 px-6 border-b border-gray-200">
-                                                                        555-555-5555</td>
-
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="py-4 px-6 border-b border-gray-200">Jane
-                                                                        Doe</td>
-                                                                    <td
-                                                                        class="py-4 px-6 border-b border-gray-200 truncate">
-                                                                        janedoe@gmail.com</td>
-                                                                    <td class="py-4 px-6 border-b border-gray-200">
-                                                                        555-555-5555</td>
-
-                                                                </tr>
+                                                                
                                                                 <!-- Add more rows here -->
                                                             </tbody>
                                                         </table>
@@ -429,9 +428,9 @@
                                             </div>
                                         </div>
                                         <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                                            <button type="button"
+                                            <button @click = "closeDisc()" type="button"
                                                 class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                                                @click="discountBtn()">Cancel</button>
+                                                >Cancel</button>
                                         </div>
                                     </div>
                                 </div>
@@ -465,7 +464,8 @@ export default {
             non_modifiable: [],
             modifiable: [],
             sc_records: [],
-            discounts:[],
+            discounts:null,
+            discountedAmount:0,
             sc_count: 0,
             tax_and_discount_template: {
                 service_charge: false,
@@ -484,6 +484,49 @@ export default {
         close() {
             this.$store.dispatch("closeProductOverview");
         },
+        computeDiscount(value,isPercent,disc_id){
+            var items = this.main;
+            if(items.net_amount < value){
+                toast.fire({
+                    icon:"error",
+                    title: "Discount Value should not be greater than price"
+                });
+                return;
+            }
+            if(items.isDiscounted == 1){
+                toast.fire({
+                    icon:"error",
+                    title: "Item already discounted"
+                });
+                return;
+            }
+            console.log("dis one");
+            console.log(items);
+            var basePrice =items.net_amount;
+            var vatAmt = items.vat_amount;
+            var lessVatPrice = basePrice-vatAmt;
+            var discValue = isPercent == 1? value/100:value;
+
+            var discAmt = isPercent == 1 ? lessVatPrice * discValue:discValue;
+            var discountedPrice = lessVatPrice - discAmt;
+            this.discountedAmount = discountedPrice;
+            items.sc_discount_amount = discAmt;
+            items.sc_discount_percentage =value;
+            items.discId = disc_id;
+     if(value == 20)
+            {      items.vat_ex = lessVatPrice;
+                items.vat_amount = 0;
+                items.vatable_sales = 0;}
+            items.net_amount = discountedPrice;
+            items.isDiscounted = 1;
+            console.log(discountedPrice);
+            console.log(isPercent);
+            toast.fire({
+                    icon:"success",
+                    title: "Item discount success"
+                });
+            this.closeDisc();
+        },
         closeDisc(){
             this.isApplyDisc = !this.isApplyDisc;
             
@@ -491,27 +534,20 @@ export default {
         discountBtn() {
             this.isApplyDisc = !this.isApplyDisc;
             axios
-                        .get(`/getDiscounts`, {
-                            orderslip_number:
-                                this.get_current_transaction.orderslip_number,
-                            product: this.main,
-                            notes: this.main.notes,
-                            non_modifiable: this.non_modifiable,
-                            modifiable: this.modifiable,
-                            senior_headcount: this.sc_count,
-                            // regular_headcount: this.regular_headcount,
-                        })
+                        .get(`/getDiscounts`)
                         .then((res) => {
-                            this.discounts = res;
+                            this.discounts = JSON.parse(JSON.stringify(res.data));
                             // toast.fire({
-                            //     title: "Successfully added",
+                            //     title: "Request successful",
                             // });
+                            console.log(this.discounts);
                         })
                         .catch((error) => {
                             toast.fire({
                                 icon: "warning",
                                 title: error.response.data.message,
                             });
+                            // console.log( error.response.data.message);
                         });
         },
         minusQtySCPWD() {
@@ -583,6 +619,8 @@ export default {
                                 title: "Successfully added",
                             });
                             this.$store.dispatch("fetchCurrentTransaction");
+                            console.log('this is it');
+                            console.log(  this.get_current_transaction);
                             this.close();
                         })
                         .catch((error) => {
@@ -1050,6 +1088,8 @@ export default {
             modified_quantity: 1,
             notes: "",
             retail_price: this.get_selected_store_product.retail,
+            isDiscounted:0,
+            discId: 0,
         };
         this.compute_tax_and_discount(this.main);
 
@@ -1064,6 +1104,30 @@ export default {
 </script>
 
 <style>
+.mytbl-cont{
+    max-height: 30vh;
+    overflow-y:auto ;
+    border: 1px solid #ccc;
+
+}
+table{
+    width: 100%;
+    border-collapse: collapse;
+
+}
+thead th{
+    position: sticky;
+    top: 0;
+    background-color: #f9f9f9;
+    z-index: 10;
+    padding: 8px;
+    text-align: center;
+    border: solid 1px #ddd;
+}
+th,td{
+    padding: 8px;
+    border: 1px solid #ddd;
+}
 .container-enter-active,
 .container-leave-active {
     transition: opacity 0.5s;

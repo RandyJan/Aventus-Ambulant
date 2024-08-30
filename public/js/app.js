@@ -8875,6 +8875,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       axios.get("/orderslips/".concat(this.get_os_overview_value)).then(function (res) {
         _this2.order_summary = res.data.data;
+        console.log('this one');
+        console.log(res.data.data);
       })["catch"](function (err) {
         debug(err);
         toast.fire({
@@ -11479,7 +11481,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "StoreProduct",
@@ -11490,6 +11491,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       non_modifiable: [],
       modifiable: [],
       sc_records: [],
+      discounts: null,
+      discountedAmount: 0,
       sc_count: 0,
       tax_and_discount_template: {
         service_charge: false,
@@ -11507,8 +11510,73 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     close: function close() {
       this.$store.dispatch("closeProductOverview");
     },
-    discountBtn: function discountBtn() {
+    computeDiscount: function computeDiscount(value, isPercent, disc_id) {
+      var items = this.main;
+
+      if (items.net_amount < value) {
+        toast.fire({
+          icon: "error",
+          title: "Discount Value should not be greater than price"
+        });
+        return;
+      }
+
+      if (items.isDiscounted == 1) {
+        toast.fire({
+          icon: "error",
+          title: "Item already discounted"
+        });
+        return;
+      }
+
+      console.log("dis one");
+      console.log(items);
+      var basePrice = items.net_amount;
+      var vatAmt = items.vat_amount;
+      var lessVatPrice = basePrice - vatAmt;
+      var discValue = isPercent == 1 ? value / 100 : value;
+      var discAmt = isPercent == 1 ? lessVatPrice * discValue : discValue;
+      var discountedPrice = lessVatPrice - discAmt;
+      this.discountedAmount = discountedPrice;
+      items.sc_discount_amount = discAmt;
+      items.sc_discount_percentage = value;
+      items.discId = disc_id;
+
+      if (value == 20) {
+        items.vat_ex = lessVatPrice;
+        items.vat_amount = 0;
+        items.vatable_sales = 0;
+      }
+
+      items.net_amount = discountedPrice;
+      items.isDiscounted = 1;
+      console.log(discountedPrice);
+      console.log(isPercent);
+      toast.fire({
+        icon: "success",
+        title: "Item discount success"
+      });
+      this.closeDisc();
+    },
+    closeDisc: function closeDisc() {
       this.isApplyDisc = !this.isApplyDisc;
+    },
+    discountBtn: function discountBtn() {
+      var _this = this;
+
+      this.isApplyDisc = !this.isApplyDisc;
+      axios.get("/getDiscounts").then(function (res) {
+        _this.discounts = JSON.parse(JSON.stringify(res.data)); // toast.fire({
+        //     title: "Request successful",
+        // });
+
+        console.log(_this.discounts);
+      })["catch"](function (error) {
+        toast.fire({
+          icon: "warning",
+          title: error.response.data.message
+        }); // console.log( error.response.data.message);
+      });
     },
     minusQtySCPWD: function minusQtySCPWD() {
       if (this.sc_count == 0) {
@@ -11553,7 +11621,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.taxAndDiscountUpdater();
     },
     submit: function submit() {
-      var _this = this;
+      var _this2 = this;
 
       if (this.main.modified_quantity == 0) {
         return;
@@ -11562,21 +11630,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       confirm.fire({}).then(function (result) {
         if (result.isConfirmed) {
           axios.post("/add-to-cart", {
-            orderslip_number: _this.get_current_transaction.orderslip_number,
-            product: _this.main,
-            notes: _this.main.notes,
-            non_modifiable: _this.non_modifiable,
-            modifiable: _this.modifiable,
-            senior_headcount: _this.sc_count // regular_headcount: this.regular_headcount,
+            orderslip_number: _this2.get_current_transaction.orderslip_number,
+            product: _this2.main,
+            notes: _this2.main.notes,
+            non_modifiable: _this2.non_modifiable,
+            modifiable: _this2.modifiable,
+            senior_headcount: _this2.sc_count // regular_headcount: this.regular_headcount,
 
           }).then(function (res) {
             toast.fire({
               title: "Successfully added"
             });
 
-            _this.$store.dispatch("fetchCurrentTransaction");
+            _this2.$store.dispatch("fetchCurrentTransaction");
 
-            _this.close();
+            console.log('this is it');
+            console.log(_this2.get_current_transaction);
+
+            _this2.close();
           })["catch"](function (error) {
             toast.fire({
               icon: "warning",
@@ -11587,7 +11658,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     fetchComponents: function fetchComponents() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get("/postmixes", {
         params: {
@@ -11598,28 +11669,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (res) {
         res.data.data.forEach(function (el) {
           if (!el.is_modifiable) {
-            _this2.non_modifiable.push(_objectSpread({}, el));
+            _this3.non_modifiable.push(_objectSpread({}, el));
           }
 
           if (el.is_modifiable) {
-            _this2.modifiable.push(_objectSpread(_objectSpread({}, el), {}, {
+            _this3.modifiable.push(_objectSpread(_objectSpread({}, el), {}, {
               group_products: []
             }));
           }
         });
 
-        _this2.fetchProductsWithSameCategoryOfModifiableComponent();
+        _this3.fetchProductsWithSameCategoryOfModifiableComponent();
       })["catch"](function (error) {});
     },
     fetchProductsWithSameCategoryOfModifiableComponent: function fetchProductsWithSameCategoryOfModifiableComponent() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.modifiable.forEach(function (el) {
         axios.get("/outlet-products", {
           params: {
             include_zero_price: true,
-            branch_id: _this3.get_selected_store_product.branch_id,
-            outlet_id: _this3.get_selected_store_product.outlet_id,
+            branch_id: _this4.get_selected_store_product.branch_id,
+            outlet_id: _this4.get_selected_store_product.outlet_id,
             // group: el.group_code,
             category: el.category_code,
             limit: 100
@@ -11631,7 +11702,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           main_el = main_el[0];
           res.data.data.forEach(function (e) {
             if (el.child_product_id != e.product_id) {
-              el.group_products.push(_objectSpread(_objectSpread(_objectSpread({}, e), JSON.parse(JSON.stringify(_this3.tax_and_discount_template))), {}, {
+              el.group_products.push(_objectSpread(_objectSpread(_objectSpread({}, e), JSON.parse(JSON.stringify(_this4.tax_and_discount_template))), {}, {
                 amount: 0,
                 net_amount: 0,
                 retail_price: e.retail > main_el.retail ? e.retail - main_el.retail : 0,
@@ -11643,10 +11714,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     updateComponents: function updateComponents(action) {
-      var _this4 = this;
+      var _this5 = this;
 
       this.non_modifiable.forEach(function (el) {
-        el.modified_quantity = el.child_quantity * _this4.qty;
+        el.modified_quantity = el.child_quantity * _this5.qty;
       });
       this.modifiable.forEach(function (el) {
         if (action == "plus") {
@@ -11691,12 +11762,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       child.modified_quantity += 1;
     },
     taxAndDiscountUpdater: function taxAndDiscountUpdater() {
-      var _this5 = this;
+      var _this6 = this;
 
       this.compute_tax_and_discount(this.main);
       this.modifiable.forEach(function (el) {
         el.group_products.forEach(function (e) {
-          _this5.compute_tax_and_discount(e);
+          _this6.compute_tax_and_discount(e);
         });
       });
     },
@@ -11976,7 +12047,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   }),
   created: function created() {
-    var _this6 = this;
+    var _this7 = this;
 
     if (this.get_settings.service_charge == true) {
       console.log("service charge is enable...");
@@ -11990,11 +12061,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       net_amount: 0,
       modified_quantity: 1,
       notes: "",
-      retail_price: this.get_selected_store_product.retail
+      retail_price: this.get_selected_store_product.retail,
+      isDiscounted: 0,
+      discId: 0
     });
     this.compute_tax_and_discount(this.main);
     this.get_current_transaction.sc_records.forEach(function (el) {
-      _this6.sc_records.push(_objectSpread({}, JSON.parse(JSON.stringify(el))));
+      _this7.sc_records.push(_objectSpread({}, JSON.parse(JSON.stringify(el))));
     });
   }
 });
@@ -16241,7 +16314,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.container-enter-active,\r\n.container-leave-active {\r\n    transition: opacity 0.5s;\n}\n.container-enter,\r\n.container-leave-to\r\n\r\n/* .fade-leave-active below version 2.1.8 */\r\n    {\r\n    opacity: 0;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.mytbl-cont{\r\n    max-height: 30vh;\r\n    overflow-y:auto ;\r\n    border: 1px solid #ccc;\n}\ntable{\r\n    width: 100%;\r\n    border-collapse: collapse;\n}\nthead th{\r\n    position: -webkit-sticky;\r\n    position: sticky;\r\n    top: 0;\r\n    background-color: #f9f9f9;\r\n    z-index: 10;\r\n    padding: 8px;\r\n    text-align: center;\r\n    border: solid 1px #ddd;\n}\nth,td{\r\n    padding: 8px;\r\n    border: 1px solid #ddd;\n}\n.container-enter-active,\r\n.container-leave-active {\r\n    transition: opacity 0.5s;\n}\n.container-enter,\r\n.container-leave-to\r\n\r\n/* .fade-leave-active below version 2.1.8 */\r\n    {\r\n    opacity: 0;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -69996,13 +70069,13 @@ var render = function () {
               },
               [
                 _vm._v(
-                  "\n                        " +
+                  "\n                            " +
                     _vm._s(
                       _vm.get_selected_store_product
                         ? _vm.get_selected_store_product.product_description
                         : null
                     ) +
-                    "\n                        "
+                    "\n                            "
                 ),
                 _c("span", { staticClass: "text-red-500" }, [
                   _vm._v(
@@ -70024,13 +70097,13 @@ var render = function () {
               },
               [
                 _vm._v(
-                  "\n                        " +
+                  "\n                            " +
                     _vm._s(
                       _vm.get_selected_store_product
                         ? _vm.get_selected_store_product.retail
                         : null
                     ) +
-                    "\n                    "
+                    "\n                        "
                 ),
               ]
             ),
@@ -70083,9 +70156,9 @@ var render = function () {
                 _vm._v(" "),
                 _c("div", { staticClass: "text-4xl font-medium" }, [
                   _vm._v(
-                    "\n                            " +
+                    "\n                                " +
                       _vm._s(_vm.main.modified_quantity) +
-                      "\n                        "
+                      "\n                            "
                   ),
                 ]),
                 _vm._v(" "),
@@ -70159,7 +70232,7 @@ var render = function () {
                       },
                       [
                         _vm._v(
-                          "\n                                Headcount Configuration\n                            "
+                          "\n                                    Headcount Configuration\n                                "
                         ),
                       ]
                     ),
@@ -70215,9 +70288,9 @@ var render = function () {
                         _vm._v(" "),
                         _c("div", { staticClass: "text-4xl font-medium" }, [
                           _vm._v(
-                            "\n                                    " +
+                            "\n                                        " +
                               _vm._s(_vm.sc_count) +
-                              "\n                                "
+                              "\n                                    "
                           ),
                         ]),
                         _vm._v(" "),
@@ -70264,11 +70337,11 @@ var render = function () {
                     _c("div", { staticClass: "text-center text-xs mt-1" }, [
                       _c("span", { staticClass: "italic" }, [
                         _vm._v(
-                          "\n                                    Senior Headcount (" +
+                          "\n                                        Senior Headcount (" +
                             _vm._s(_vm.sc_records.length)
                         ),
                         _c("small", [_vm._v("max")]),
-                        _vm._v(")\n                                "),
+                        _vm._v(")\n                                    "),
                       ]),
                     ]),
                   ]),
@@ -70301,7 +70374,7 @@ var render = function () {
                       },
                       [
                         _vm._v(
-                          "\n                                Non Modifiable Components\n                            "
+                          "\n                                    Non Modifiable Components\n                                "
                         ),
                       ]
                     ),
@@ -70321,13 +70394,13 @@ var render = function () {
                       },
                       [
                         _vm._v(
-                          "\n                            " +
+                          "\n                                " +
                             _vm._s(item.child_description) +
-                            "\n                            "
+                            "\n                                "
                         ),
                         _c("small", { staticClass: "ml-2 font-normal" }, [
                           _vm._v(
-                            "quantity\n                                " +
+                            "quantity\n                                    " +
                               _vm._s(item.modified_quantity)
                           ),
                         ]),
@@ -70367,7 +70440,7 @@ var render = function () {
                         },
                         [
                           _vm._v(
-                            "\n                                Modifiable Components\n                            "
+                            "\n                                    Modifiable Components\n                                "
                           ),
                         ]
                       ),
@@ -70387,13 +70460,13 @@ var render = function () {
                           },
                           [
                             _vm._v(
-                              "\n                            " +
+                              "\n                                " +
                                 _vm._s(item.child_description) +
-                                "\n                            "
+                                "\n                                "
                             ),
                             _c("small", { staticClass: "ml-2 font-normal" }, [
                               _vm._v(
-                                "quantity\n                                " +
+                                "quantity\n                                    " +
                                   _vm._s(item.modified_quantity)
                               ),
                             ]),
@@ -70475,11 +70548,11 @@ var render = function () {
                                             },
                                             [
                                               _vm._v(
-                                                "\n                                            " +
+                                                "\n                                                " +
                                                   _vm._s(
                                                     sub_item.modified_quantity
                                                   ) +
-                                                  "\n                                        "
+                                                  "\n                                            "
                                               ),
                                             ]
                                           ),
@@ -70538,11 +70611,11 @@ var render = function () {
                                         [
                                           _c("div", [
                                             _vm._v(
-                                              "\n                                            " +
+                                              "\n                                                " +
                                                 _vm._s(
                                                   sub_item.product_description
                                                 ) +
-                                                "\n                                        "
+                                                "\n                                            "
                                             ),
                                           ]),
                                           _vm._v(" "),
@@ -70554,13 +70627,13 @@ var render = function () {
                                             },
                                             [
                                               _vm._v(
-                                                "\n                                            " +
+                                                "\n                                                " +
                                                   _vm._s(
                                                     sub_item.retail_price.toFixed(
                                                       2
                                                     )
                                                   ) +
-                                                  "\n                                        "
+                                                  "\n                                            "
                                               ),
                                             ]
                                           ),
@@ -70575,14 +70648,14 @@ var render = function () {
                                         },
                                         [
                                           _vm._v(
-                                            "\n                                        " +
+                                            "\n                                            " +
                                               _vm._s(
                                                 (
                                                   sub_item.retail_price *
                                                   sub_item.modified_quantity
                                                 ).toFixed(2)
                                               ) +
-                                              "\n                                    "
+                                              "\n                                        "
                                           ),
                                         ]
                                       ),
@@ -70611,25 +70684,25 @@ var render = function () {
               },
               [
                 _vm._v(
-                  "\n                        " +
+                  "\n                            " +
                     _vm._s(
                       _vm.get_settings.app_type == "invoicer_ambulant"
                         ? "IMEI"
                         : ""
                     ) +
-                    "\n                        " +
+                    "\n                            " +
                     _vm._s(
                       _vm.get_settings.app_type == "restaurant_ambulant"
                         ? "Add notes"
                         : ""
                     ) +
-                    "\n                        " +
+                    "\n                            " +
                     _vm._s(
                       _vm.get_settings.app_type == "shell_ambulant"
                         ? "Add notes"
                         : ""
                     ) +
-                    "\n                    "
+                    "\n                        "
                 ),
               ]
             ),
@@ -70662,223 +70735,197 @@ var render = function () {
           _vm._v(" "),
           _c("div", { staticClass: "mt-4 border-t" }, [
             _c("div", {}, [
-              _vm.vatable_sales > 0
-                ? _c("div", { staticClass: "relative" }, [
+              _c("div", { staticClass: "relative" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "absolute inset-0 flex items-center",
+                    attrs: { "aria-hidden": "true" },
+                  },
+                  [
+                    _c("div", {
+                      staticClass: "w-full border-t border-gray-300",
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "relative flex items-center justify-between" },
+                  [
                     _c(
-                      "div",
+                      "span",
                       {
-                        staticClass: "absolute inset-0 flex items-center",
-                        attrs: { "aria-hidden": "true" },
+                        staticClass:
+                          "pr-3 bg-gray-100 text-sm font-medium text-gray-700",
                       },
                       [
-                        _c("div", {
-                          staticClass: "w-full border-t border-gray-300",
-                        }),
+                        _vm._v(
+                          "\n                                        VATable Sales\n                                    "
+                        ),
                       ]
                     ),
                     _vm._v(" "),
                     _c(
-                      "div",
+                      "span",
                       {
                         staticClass:
-                          "relative flex items-center justify-between",
+                          "pr-3 pl-2 bg-gray-100 text-sm font-medium text-gray-700",
                       },
                       [
-                        _c(
-                          "span",
-                          {
-                            staticClass:
-                              "pr-3 bg-gray-100 text-sm font-medium text-gray-700",
-                          },
-                          [
-                            _vm._v(
-                              "\n                                    VATable Sales\n                                "
-                            ),
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "span",
-                          {
-                            staticClass:
-                              "pr-3 pl-2 bg-gray-100 text-sm font-medium text-gray-700",
-                          },
-                          [
-                            _vm._v(
-                              "\n                                    " +
-                                _vm._s(_vm.vatable_sales.toFixed(2)) +
-                                "\n                                "
-                            ),
-                          ]
+                        _vm._v(
+                          "\n                                        " +
+                            _vm._s(_vm.vatable_sales.toFixed(2)) +
+                            "\n                                    "
                         ),
                       ]
                     ),
-                  ])
-                : _vm._e(),
+                  ]
+                ),
+              ]),
               _vm._v(" "),
-              _vm.vat_amount > 0
-                ? _c("div", { staticClass: "relative" }, [
+              _c("div", { staticClass: "relative" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "absolute inset-0 flex items-center",
+                    attrs: { "aria-hidden": "true" },
+                  },
+                  [
+                    _c("div", {
+                      staticClass: "w-full border-t border-gray-300",
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "relative flex items-center justify-between" },
+                  [
                     _c(
-                      "div",
+                      "span",
                       {
-                        staticClass: "absolute inset-0 flex items-center",
-                        attrs: { "aria-hidden": "true" },
+                        staticClass:
+                          "pr-3 bg-gray-100 text-sm font-medium text-gray-700",
                       },
                       [
-                        _c("div", {
-                          staticClass: "w-full border-t border-gray-300",
-                        }),
+                        _vm._v(
+                          "\n                                        VAT Amount\n                                    "
+                        ),
                       ]
                     ),
                     _vm._v(" "),
                     _c(
-                      "div",
+                      "span",
                       {
                         staticClass:
-                          "relative flex items-center justify-between",
+                          "pr-3 pl-2 bg-gray-100 text-sm font-medium text-gray-700",
                       },
                       [
-                        _c(
-                          "span",
-                          {
-                            staticClass:
-                              "pr-3 bg-gray-100 text-sm font-medium text-gray-700",
-                          },
-                          [
-                            _vm._v(
-                              "\n                                    VAT Amount\n                                "
-                            ),
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "span",
-                          {
-                            staticClass:
-                              "pr-3 pl-2 bg-gray-100 text-sm font-medium text-gray-700",
-                          },
-                          [
-                            _vm._v(
-                              "\n                                    " +
-                                _vm._s(_vm.vat_amount.toFixed(2)) +
-                                "\n                                "
-                            ),
-                          ]
+                        _vm._v(
+                          "\n                                        " +
+                            _vm._s(_vm.vat_amount.toFixed(2)) +
+                            "\n                                    "
                         ),
                       ]
                     ),
-                  ])
-                : _vm._e(),
+                  ]
+                ),
+              ]),
               _vm._v(" "),
-              _vm.vat_ex > 0
-                ? _c("div", { staticClass: "relative" }, [
+              _c("div", { staticClass: "relative" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "absolute inset-0 flex items-center",
+                    attrs: { "aria-hidden": "true" },
+                  },
+                  [
+                    _c("div", {
+                      staticClass: "w-full border-t border-gray-300",
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "relative flex items-center justify-between" },
+                  [
                     _c(
-                      "div",
+                      "span",
                       {
-                        staticClass: "absolute inset-0 flex items-center",
-                        attrs: { "aria-hidden": "true" },
+                        staticClass:
+                          "pr-3 bg-gray-100 text-sm font-medium text-gray-700",
                       },
                       [
-                        _c("div", {
-                          staticClass: "w-full border-t border-gray-300",
-                        }),
+                        _vm._v(
+                          "\n                                        VAT Ex.\n                                    "
+                        ),
                       ]
                     ),
                     _vm._v(" "),
                     _c(
-                      "div",
+                      "span",
                       {
                         staticClass:
-                          "relative flex items-center justify-between",
+                          "pr-3 pl-2 bg-gray-100 text-sm font-medium text-gray-700",
                       },
                       [
-                        _c(
-                          "span",
-                          {
-                            staticClass:
-                              "pr-3 bg-gray-100 text-sm font-medium text-gray-700",
-                          },
-                          [
-                            _vm._v(
-                              "\n                                    VAT Ex.\n                                "
-                            ),
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "span",
-                          {
-                            staticClass:
-                              "pr-3 pl-2 bg-gray-100 text-sm font-medium text-gray-700",
-                          },
-                          [
-                            _vm._v(
-                              "\n                                    " +
-                                _vm._s(_vm.vat_ex.toFixed(2)) +
-                                "\n                                "
-                            ),
-                          ]
+                        _vm._v(
+                          "\n                                        " +
+                            _vm._s(_vm.vat_ex.toFixed(2)) +
+                            "\n                                    "
                         ),
                       ]
                     ),
-                  ])
-                : _vm._e(),
+                  ]
+                ),
+              ]),
               _vm._v(" "),
-              _vm.sc_discount_amount > 0
-                ? _c("div", { staticClass: "relative" }, [
+              _c("div", { staticClass: "relative" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "absolute inset-0 flex items-center",
+                    attrs: { "aria-hidden": "true" },
+                  },
+                  [
+                    _c("div", {
+                      staticClass: "w-full border-t border-gray-300",
+                    }),
+                  ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "relative flex items-center justify-between" },
+                  [
                     _c(
-                      "div",
+                      "span",
                       {
-                        staticClass: "absolute inset-0 flex items-center",
-                        attrs: { "aria-hidden": "true" },
+                        staticClass:
+                          "pr-3 bg-gray-100 text-sm font-medium text-gray-700",
                       },
-                      [
-                        _c("div", {
-                          staticClass: "w-full border-t border-gray-300",
-                        }),
-                      ]
+                      [_vm._v("\n        Discount\n    ")]
                     ),
                     _vm._v(" "),
                     _c(
-                      "div",
+                      "span",
                       {
                         staticClass:
-                          "relative flex items-center justify-between",
+                          "pr-3 pl-2 bg-gray-100 text-sm font-medium text-gray-700",
                       },
                       [
-                        _c(
-                          "span",
-                          {
-                            staticClass:
-                              "pr-3 bg-gray-100 text-sm font-medium text-gray-700",
-                          },
-                          [
-                            _vm._v(
-                              "\n                                    SC/PWD Discount\n                                    " +
-                                _vm._s(_vm.sc_discount_percentage) +
-                                "%\n                                "
-                            ),
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "span",
-                          {
-                            staticClass:
-                              "pr-3 pl-2 bg-gray-100 text-sm font-medium text-gray-700",
-                          },
-                          [
-                            _vm._v(
-                              "\n                                    " +
-                                _vm._s(_vm.sc_discount_amount.toFixed(2)) +
-                                "\n                                "
-                            ),
-                          ]
+                        _vm._v(
+                          "\n        " +
+                            _vm._s(_vm.sc_discount_amount.toFixed(2)) +
+                            "\n    "
                         ),
                       ]
                     ),
-                  ])
-                : _vm._e(),
+                  ]
+                ),
+              ]),
             ]),
             _vm._v(" "),
             _c(
@@ -70901,9 +70948,9 @@ var render = function () {
               },
               [
                 _vm._v(
-                  "\n                        Add to Cart - " +
+                  "\n                            Add to Cart - " +
                     _vm._s(_vm.net_amount.toFixed(2)) +
-                    "\n                    "
+                    "\n                        "
                 ),
               ]
             ),
@@ -70912,7 +70959,7 @@ var render = function () {
               "button",
               {
                 staticClass:
-                  "mt-2 w-full justify-center inline-flex items-center px-4 py-3 border \n                    border-transparent text-sm leading-4 font-semibold rounded-md shadow-sm text-white\n                     focus:outline-none focus:ring-2 focus:ring-offset-2 tracking-wide",
+                  "mt-2 w-full justify-center inline-flex items-center px-4 py-3 border \n                        border-transparent text-sm leading-4 font-semibold rounded-md shadow-sm text-white\n                         focus:outline-none focus:ring-2 focus:ring-offset-2 tracking-wide",
                 class: {
                   "bg-blue-600 hover:bg-blue-700 focus:ring-blue-500":
                     _vm.main.modified_quantity > 0,
@@ -70928,7 +70975,7 @@ var render = function () {
               },
               [
                 _vm._v(
-                  "\n                        Apply Discount\n                    "
+                  "\n                            Apply Discount\n                        "
                 ),
               ]
             ),
@@ -70937,7 +70984,7 @@ var render = function () {
               ? _c(
                   "div",
                   {
-                    staticClass: "relative z-10",
+                    staticClass: "relative z-10 ",
                     attrs: {
                       "aria-labelledby": "modal-title",
                       role: "dialog",
@@ -70969,14 +71016,14 @@ var render = function () {
                               "div",
                               {
                                 staticClass:
-                                  "relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg",
+                                  "relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl \n                                        transition-all sm:my-8  w-2/3 ",
                               },
                               [
                                 _c(
                                   "div",
                                   {
                                     staticClass:
-                                      "bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4",
+                                      "bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4 w-full",
                                   },
                                   [
                                     _c(
@@ -71004,14 +71051,14 @@ var render = function () {
                                               "div",
                                               {
                                                 staticClass:
-                                                  " rounded-lg overflow-hidden mx-4 md:mx-0",
+                                                  " rounded-lg overflow-hidden mx-4 md:mx-0 mytbl-cont",
                                               },
                                               [
                                                 _c(
                                                   "table",
                                                   {
                                                     staticClass:
-                                                      "w-full table-fixed",
+                                                      "w-full table-fixed ",
                                                   },
                                                   [
                                                     _c("thead", [
@@ -71030,7 +71077,7 @@ var render = function () {
                                                             },
                                                             [
                                                               _vm._v(
-                                                                "\n                                                                    Discount"
+                                                                "\n                                                                        Discount"
                                                               ),
                                                             ]
                                                           ),
@@ -71043,7 +71090,7 @@ var render = function () {
                                                             },
                                                             [
                                                               _vm._v(
-                                                                "\n                                                                    Value"
+                                                                "\n                                                                        Value"
                                                               ),
                                                             ]
                                                           ),
@@ -71056,7 +71103,7 @@ var render = function () {
                                                             },
                                                             [
                                                               _vm._v(
-                                                                "\n                                                                    isPercent"
+                                                                "\n                                                                        isPercent"
                                                               ),
                                                             ]
                                                           ),
@@ -71069,171 +71116,84 @@ var render = function () {
                                                       {
                                                         staticClass: "bg-white",
                                                       },
-                                                      [
-                                                        _c("tr", [
-                                                          _c(
-                                                            "td",
+                                                      _vm._l(
+                                                        _vm.discounts,
+                                                        function (item, index) {
+                                                          return _c(
+                                                            "tr",
                                                             {
+                                                              key: index,
                                                               staticClass:
-                                                                "py-4 px-6 border-b border-gray-200",
+                                                                "hover:bg-gray-200 hover:cursor-pointer",
+                                                              on: {
+                                                                click:
+                                                                  function (
+                                                                    $event
+                                                                  ) {
+                                                                    return _vm.computeDiscount(
+                                                                      item.VALUE,
+                                                                      item.ISPERCENT,
+                                                                      item.ID
+                                                                    )
+                                                                  },
+                                                              },
                                                             },
                                                             [
-                                                              _vm._v(
-                                                                "John\n                                                                    Doe"
+                                                              _c(
+                                                                "td",
+                                                                {
+                                                                  staticClass:
+                                                                    "py-4 px-6 border-b border-gray-200",
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    _vm._s(
+                                                                      item.SHORTDESCRIPTION
+                                                                    ) +
+                                                                      "\n\n                                                                    "
+                                                                  ),
+                                                                ]
+                                                              ),
+                                                              _vm._v(" "),
+                                                              _c(
+                                                                "td",
+                                                                {
+                                                                  staticClass:
+                                                                    "py-4 px-6 border-b border-gray-200 truncate",
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "\n                                                                        " +
+                                                                      _vm._s(
+                                                                        item.VALUE
+                                                                      )
+                                                                  ),
+                                                                ]
+                                                              ),
+                                                              _vm._v(" "),
+                                                              _c(
+                                                                "td",
+                                                                {
+                                                                  staticClass:
+                                                                    "py-4 px-6 border-b border-gray-200",
+                                                                },
+                                                                [
+                                                                  _vm._v(
+                                                                    "\n                                                                        " +
+                                                                      _vm._s(
+                                                                        item.ISPERCENT ==
+                                                                          1
+                                                                          ? "YES"
+                                                                          : "NO"
+                                                                      )
+                                                                  ),
+                                                                ]
                                                               ),
                                                             ]
-                                                          ),
-                                                          _vm._v(" "),
-                                                          _c(
-                                                            "td",
-                                                            {
-                                                              staticClass:
-                                                                "py-4 px-6 border-b border-gray-200 truncate",
-                                                            },
-                                                            [
-                                                              _vm._v(
-                                                                "\n                                                                    johndoe@gmail.com"
-                                                              ),
-                                                            ]
-                                                          ),
-                                                          _vm._v(" "),
-                                                          _c(
-                                                            "td",
-                                                            {
-                                                              staticClass:
-                                                                "py-4 px-6 border-b border-gray-200",
-                                                            },
-                                                            [
-                                                              _vm._v(
-                                                                "\n                                                                    555-555-5555"
-                                                              ),
-                                                            ]
-                                                          ),
-                                                        ]),
-                                                        _vm._v(" "),
-                                                        _c("tr", [
-                                                          _c(
-                                                            "td",
-                                                            {
-                                                              staticClass:
-                                                                "py-4 px-6 border-b border-gray-200",
-                                                            },
-                                                            [
-                                                              _vm._v(
-                                                                "Jane\n                                                                    Doe"
-                                                              ),
-                                                            ]
-                                                          ),
-                                                          _vm._v(" "),
-                                                          _c(
-                                                            "td",
-                                                            {
-                                                              staticClass:
-                                                                "py-4 px-6 border-b border-gray-200 truncate",
-                                                            },
-                                                            [
-                                                              _vm._v(
-                                                                "\n                                                                    janedoe@gmail.com"
-                                                              ),
-                                                            ]
-                                                          ),
-                                                          _vm._v(" "),
-                                                          _c(
-                                                            "td",
-                                                            {
-                                                              staticClass:
-                                                                "py-4 px-6 border-b border-gray-200",
-                                                            },
-                                                            [
-                                                              _vm._v(
-                                                                "\n                                                                    555-555-5555"
-                                                              ),
-                                                            ]
-                                                          ),
-                                                        ]),
-                                                        _vm._v(" "),
-                                                        _c("tr", [
-                                                          _c(
-                                                            "td",
-                                                            {
-                                                              staticClass:
-                                                                "py-4 px-6 border-b border-gray-200",
-                                                            },
-                                                            [
-                                                              _vm._v(
-                                                                "Jane\n                                                                    Doe"
-                                                              ),
-                                                            ]
-                                                          ),
-                                                          _vm._v(" "),
-                                                          _c(
-                                                            "td",
-                                                            {
-                                                              staticClass:
-                                                                "py-4 px-6 border-b border-gray-200 truncate",
-                                                            },
-                                                            [
-                                                              _vm._v(
-                                                                "\n                                                                    janedoe@gmail.com"
-                                                              ),
-                                                            ]
-                                                          ),
-                                                          _vm._v(" "),
-                                                          _c(
-                                                            "td",
-                                                            {
-                                                              staticClass:
-                                                                "py-4 px-6 border-b border-gray-200",
-                                                            },
-                                                            [
-                                                              _vm._v(
-                                                                "\n                                                                    555-555-5555"
-                                                              ),
-                                                            ]
-                                                          ),
-                                                        ]),
-                                                        _vm._v(" "),
-                                                        _c("tr", [
-                                                          _c(
-                                                            "td",
-                                                            {
-                                                              staticClass:
-                                                                "py-4 px-6 border-b border-gray-200",
-                                                            },
-                                                            [
-                                                              _vm._v(
-                                                                "Jane\n                                                                    Doe"
-                                                              ),
-                                                            ]
-                                                          ),
-                                                          _vm._v(" "),
-                                                          _c(
-                                                            "td",
-                                                            {
-                                                              staticClass:
-                                                                "py-4 px-6 border-b border-gray-200 truncate",
-                                                            },
-                                                            [
-                                                              _vm._v(
-                                                                "\n                                                                    janedoe@gmail.com"
-                                                              ),
-                                                            ]
-                                                          ),
-                                                          _vm._v(" "),
-                                                          _c(
-                                                            "td",
-                                                            {
-                                                              staticClass:
-                                                                "py-4 px-6 border-b border-gray-200",
-                                                            },
-                                                            [
-                                                              _vm._v(
-                                                                "\n                                                                    555-555-5555"
-                                                              ),
-                                                            ]
-                                                          ),
-                                                        ]),
-                                                      ]
+                                                          )
+                                                        }
+                                                      ),
+                                                      0
                                                     ),
                                                   ]
                                                 ),
@@ -71261,7 +71221,7 @@ var render = function () {
                                         attrs: { type: "button" },
                                         on: {
                                           click: function ($event) {
-                                            return _vm.discountBtn()
+                                            return _vm.closeDisc()
                                           },
                                         },
                                       },

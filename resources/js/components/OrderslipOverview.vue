@@ -511,6 +511,8 @@ export default {
                 .get(`/orderslips/${this.get_os_overview_value}`)
                 .then((res) => {
                     this.order_summary = res.data.data;
+                    console.log('this one');
+                    console.log(res.data.data);
                 })
                 .catch((err) => {
                     debug(err);

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LookUpController;
 use App\Http\Controllers\OrderslipController;
 use App\Http\Resources\OrderSlip;
 use Illuminate\Support\Facades\Route;
@@ -101,6 +102,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/pos-print', [App\Http\Controllers\PosPrintController::class, 'index']);
 
     Route::get('/AddNewJO',[OrderslipController::class,'AddNewJO']);
+    Route::get('/getDiscounts', [LookUpController::class, 'getDiscount']);
+
 });
 
 Route::get('/app-setting', [App\Http\Controllers\AppSettingController::class, 'index']);
