@@ -8,6 +8,7 @@ use App\Http\Resources\OrderSlipDetails;
 use App\Http\Resources\OrderSlipDetailsCollection;
 use App\Http\Resources\OrderslipSenior as ResourcesOrderslipSenior;
 use App\Http\Resources\OrderslipTable as ResourcesOrderslipTable;
+use App\Models\AdjustmentRate;
 use App\Models\Customer;
 use App\Models\Group;
 use App\Models\OrderSlipDetail;
@@ -95,6 +96,14 @@ class CartInformationService
                 ->where('ORDERSLIPNO', $os->ORDERSLIPNO)
                 ->where('STATUS', '!=', 'V')
                 ->get();
+                //GET DISCOUNT DESCRIPTION
+                // $discountId= OrderSlipDetail::select('DISCID')->
+                // where('BRANCHID', $os->BRANCHID)
+                // ->where('OUTLETID', $os->OUTLETID)
+                // ->where('DEVICENO', $os->DEVICENO)
+                // ->where('ORDERSLIPNO', $os->ORDERSLIPNO)
+                // ->first();
+                // $discountName = AdjustmentRate::select('SHORTDESCRIPTION')->where('ID',$discountId)->first();
 
             // GET STORES
             foreach ($osd->unique('LOCATIONID')->pluck('LOCATIONID')->toArray() as $key => $store_code) {

@@ -322,7 +322,7 @@
 </div>
 <div class="relative flex items-center justify-between">
     <span class="pr-3 bg-gray-100 text-sm font-medium text-gray-700">
-        Discount
+        Discount {{ discountName?"("+discountName+")":'' }}
     </span>
     <span class="pr-3 pl-2 bg-gray-100 text-sm font-medium text-gray-700">
         {{ sc_discount_amount.toFixed(2) }}
@@ -405,7 +405,7 @@
                                                                 <tr v-for=" (item,index) in discounts"
                                                                  :key=index
                                                                  class="hover:bg-gray-200 hover:cursor-pointer"
-                                                                 @click="computeDiscount(item.VALUE,item.ISPERCENT,item.ID)"
+                                                                 @click="computeDiscount(item.VALUE,item.ISPERCENT,item.ID,item.SHORTDESCRIPTION)"
 
                                                                  >
                                                                     <td class="py-4 px-6 border-b border-gray-200">{{item.SHORTDESCRIPTION}}
@@ -467,6 +467,7 @@ export default {
             discounts:null,
             discountedAmount:0,
             sc_count: 0,
+            discountName:null,
             tax_and_discount_template: {
                 service_charge: false,
                 service_charge_percentage: 0,
@@ -484,8 +485,9 @@ export default {
         close() {
             this.$store.dispatch("closeProductOverview");
         },
-        computeDiscount(value,isPercent,disc_id){
+        computeDiscount(value,isPercent,disc_id,description){
             var items = this.main;
+
             if(items.net_amount < value){
                 toast.fire({
                     icon:"error",
@@ -525,6 +527,7 @@ export default {
                     icon:"success",
                     title: "Item discount success"
                 });
+                this.discountName = description;
             this.closeDisc();
         },
         closeDisc(){

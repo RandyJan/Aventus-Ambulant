@@ -11494,6 +11494,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       discounts: null,
       discountedAmount: 0,
       sc_count: 0,
+      discountName: null,
       tax_and_discount_template: {
         service_charge: false,
         service_charge_percentage: 0,
@@ -11510,7 +11511,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     close: function close() {
       this.$store.dispatch("closeProductOverview");
     },
-    computeDiscount: function computeDiscount(value, isPercent, disc_id) {
+    computeDiscount: function computeDiscount(value, isPercent, disc_id, description) {
       var items = this.main;
 
       if (items.net_amount < value) {
@@ -11556,6 +11557,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         icon: "success",
         title: "Item discount success"
       });
+      this.discountName = description;
       this.closeDisc();
     },
     closeDisc: function closeDisc() {
@@ -70906,7 +70908,17 @@ var render = function () {
                         staticClass:
                           "pr-3 bg-gray-100 text-sm font-medium text-gray-700",
                       },
-                      [_vm._v("\n        Discount\n    ")]
+                      [
+                        _vm._v(
+                          "\n        Discount " +
+                            _vm._s(
+                              _vm.discountName
+                                ? "(" + _vm.discountName + ")"
+                                : ""
+                            ) +
+                            "\n    "
+                        ),
+                      ]
                     ),
                     _vm._v(" "),
                     _c(
@@ -71133,7 +71145,8 @@ var render = function () {
                                                                     return _vm.computeDiscount(
                                                                       item.VALUE,
                                                                       item.ISPERCENT,
-                                                                      item.ID
+                                                                      item.ID,
+                                                                      item.SHORTDESCRIPTION
                                                                     )
                                                                   },
                                                               },

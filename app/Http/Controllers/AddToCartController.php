@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AdjustmentRate;
 use App\Models\OrderSlipDetail;
 use App\Models\OrderSlipHeader;
 use App\Services\UpdateOrderslipTotalService;
@@ -39,7 +40,6 @@ class AddToCartController extends Controller
 
             $line_number = OrderSlipDetail::getNewLineNumber($os->OSNUMBER);
             $sequence = OrderSlipDetail::getNewProductSequence($os->OSNUMBER, $request->product['product_id']);
-
             OrderSlipDetail::create([
                 'ORDERSLIPDETAILID' => OrderSlipDetail::getNewDetailId($os->OSNUMBER),
                 'ORDERSLIPNO' => $os->ORDERSLIPNO,
