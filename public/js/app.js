@@ -11020,7 +11020,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -11482,6 +11484,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "StoreProduct",
   data: function data() {
@@ -11508,6 +11511,43 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     };
   },
   methods: {
+    authentication: function authentication() {
+      var authres = false;
+      sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+        title: 'Authentication',
+        html: "\n          <input id=\"username\" class=\"swal2-input\" placeholder=\"Username\" required>\n          <input id=\"password\" type=\"password\" class=\"swal2-input\" placeholder=\"Password\" required>\n        ",
+        focusConfirm: false,
+        showCancelButton: 'Cancel',
+        confirmButtonText: 'Proceed',
+        preConfirm: function preConfirm() {
+          var username = document.getElementById('username').value;
+          var password = document.getElementById('password').value;
+
+          if (!username || !password) {
+            sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().showValidationMessage('Please enter both username and password');
+            return false;
+          }
+        }
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          authres = true;
+        }
+      });
+      console.log("this is weit");
+      console.log(authres);
+
+      if (authres == true) {
+        return true;
+      }
+
+      return false; //   if (formValues) {
+      //     // Handle authentication logic here
+      //     console.log('Username:', formValues.username);
+      //     console.log('Password:', formValues.password);
+      //     // Example: Send to an API for authentication
+      //     // await this.authenticate(formValues.username, formValues.password);
+      //   }
+    },
     close: function close() {
       this.$store.dispatch("closeProductOverview");
     },
@@ -11566,19 +11606,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     discountBtn: function discountBtn() {
       var _this = this;
 
-      this.isApplyDisc = !this.isApplyDisc;
-      axios.get("/getDiscounts").then(function (res) {
-        _this.discounts = JSON.parse(JSON.stringify(res.data)); // toast.fire({
-        //     title: "Request successful",
-        // });
+      if (this.authentication()) {
+        this.isApplyDisc = !this.isApplyDisc;
+        console.log('authentication success');
+        axios.get("/getDiscounts").then(function (res) {
+          _this.discounts = JSON.parse(JSON.stringify(res.data)); // toast.fire({
+          //     title: "Request successful",
+          // });
 
-        console.log(_this.discounts);
-      })["catch"](function (error) {
-        toast.fire({
-          icon: "warning",
-          title: error.response.data.message
-        }); // console.log( error.response.data.message);
-      });
+          console.log(_this.discounts);
+        })["catch"](function (error) {
+          toast.fire({
+            icon: "warning",
+            title: error.response.data.message
+          }); // console.log( error.response.data.message);
+        });
+      } else {
+        return;
+      }
     },
     minusQtySCPWD: function minusQtySCPWD() {
       if (this.sc_count == 0) {
@@ -12013,7 +12058,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     } // END OF TAX COMPUTATIONS
 
   },
-  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)(["get_product_overview_status", "get_selected_store_product", "get_current_transaction", "get_settings"])), {}, {
+  computed: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapGetters)(["get_product_overview_status", "get_selected_store_product", "get_current_transaction", "get_settings"])), {}, {
     vatable_sales: function vatable_sales() {
       var x = 0;
       x += this.main.vatable_sales;

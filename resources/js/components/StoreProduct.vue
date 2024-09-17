@@ -453,6 +453,7 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
 import { mapGetters } from "vuex";
 export default {
     name: "StoreProduct",
@@ -482,10 +483,59 @@ export default {
         };
     },
     methods: {
+          authentication(){
+    var authres = false;
+     Swal.fire({
+        title: 'Authentication',
+        html: `
+          <input id="username" class="swal2-input" placeholder="Username" required>
+          <input id="password" type="password" class="swal2-input" placeholder="Password" required>
+        `,
+        focusConfirm: false,
+        showCancelButton:'Cancel',
+        confirmButtonText:'Proceed',
+        preConfirm: () => {
+            const username = document.getElementById('username').value;
+          const password = document.getElementById('password').value;
+
+          if (!username || !password) {
+            Swal.showValidationMessage('Please enter both username and password');
+            return false;
+          }
+        }
+      }).then((result)=>{
+      
+
+        if(result.isConfirmed){
+            authres = true;
+        }
+      });
+      console.log("this is weit");
+      console.log(authres);
+      if(authres == true){
+        return true;
+      }
+
+      return false;
+
+    //   if (formValues) {
+    //     // Handle authentication logic here
+    //     console.log('Username:', formValues.username);
+    //     console.log('Password:', formValues.password);
+        
+    //     // Example: Send to an API for authentication
+    //     // await this.authenticate(formValues.username, formValues.password);
+    //   }
+    },
+    
+  
+        
         close() {
             this.$store.dispatch("closeProductOverview");
         },
         computeDiscount(value,isPercent,disc_id,description){
+            
+
             var items = this.main;
 
             if(items.net_amount < value){
@@ -529,15 +579,17 @@ export default {
                 });
                 this.discountName = description;
             this.closeDisc();
+
         },
         closeDisc(){
             this.isApplyDisc = !this.isApplyDisc;
             
         },
         discountBtn() {
-            this.isApplyDisc = !this.isApplyDisc;
-            axios
-                        .get(`/getDiscounts`)
+            if(this.authentication()){
+                this.isApplyDisc = ! this.isApplyDisc;
+                console.log('authentication success');
+            axios.get(`/getDiscounts`)
                         .then((res) => {
                             this.discounts = JSON.parse(JSON.stringify(res.data));
                             // toast.fire({
@@ -552,6 +604,10 @@ export default {
                             });
                             // console.log( error.response.data.message);
                         });
+                    }
+                    else{
+    return
+}
         },
         minusQtySCPWD() {
             if (this.sc_count == 0) {

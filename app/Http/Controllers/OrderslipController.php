@@ -102,7 +102,7 @@ class OrderslipController extends Controller
                 'BUSDATE' => getClarionDate(now()),
                 'PAID' => 0,
                 'ACCOUNTTYPE' => $request->account_type,
-
+                'OSTYPE'=>2
                 // 'OSTYPE' => config('settings.default_order_type'),
                 // 'SERVICE_CHARGE_AMT' => 0,
                 // 'SERVICE_CHARGE_PERCENTAGE' => $request->service_charge_percentage,
