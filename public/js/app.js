@@ -6326,6 +6326,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       //   if (this.get_current_transaction.table_number == "") {
       //     return false;
       //}
+      //test
 
 
       if (this.get_current_transaction.unconfirmed_items <= 0) {

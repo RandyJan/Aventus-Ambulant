@@ -1246,6 +1246,7 @@ export default {
          //   if (this.get_current_transaction.table_number == "") {
            //     return false;
             //}
+            //test
 
             if (this.get_current_transaction.unconfirmed_items <= 0) {
                 return false;
