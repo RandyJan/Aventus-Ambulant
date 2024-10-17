@@ -1240,17 +1240,16 @@ export default {
             if (this.get_current_transaction.stores.length == 0) {
                 return false;
             }
-            if (this.get_current_transaction.total_headcount == null) {
-                return false;
-            }
-            if (this.get_current_transaction.table_number == "") {
-                return false;
-            }
+         //   if (this.get_current_transaction.total_headcount == null) {
+           //     return false;
+            //}
+         //   if (this.get_current_transaction.table_number == "") {
+           //     return false;
+            //}
 
             if (this.get_current_transaction.unconfirmed_items <= 0) {
                 return false;
             }
-            console.log(this.get_settings.table_assignment);
             return true;
         },
     },
