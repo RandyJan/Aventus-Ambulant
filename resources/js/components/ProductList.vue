@@ -54,7 +54,7 @@
                     <p class="mt-2 text-sm font-medium text-gray-900 pointer-events-none flex">
 
                         <span class="bg-gray-600 text-white px-1 rounded">
-                            {{ item.retail }}
+                            {{ account == 1 ?item.retail:item.netretail }}
                         </span>
 
                         <span
@@ -107,17 +107,22 @@ export default {
             selected_category: null,
             search_category: 'All',
             category_options: [],
+            account:0
         }
     },
     computed: {
         ...mapGetters([
             'get_auth',
             'get_selected_store',
+            "get_current_transaction",
             'get_product_overview_status'
         ])
     },
     methods: {
         fetchProducts(page = null){
+           console.log("current transaction");
+            console.log(this.get_current_transaction.accounttype);
+
             axios.get(`/outlet-products`, {
                 params: {
                     exclude_zero_price: true,
@@ -126,10 +131,13 @@ export default {
                     search: this.search,
                     group: this.selected_category,
                     page: page ?? 1,
-                    limit: 500
+                    limit: 500,
+                    accounttype:this.get_current_transaction.accounttype
                 }
             }).then( res=> {
                 this.products = JSON.parse( JSON.stringify(res.data) );
+                this.account = this.get_current_transaction.accounttype;
+                console.log(res.data);
             }).catch( err => {
                 this.products = null;
             })

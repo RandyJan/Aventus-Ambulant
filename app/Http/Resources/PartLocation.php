@@ -25,6 +25,7 @@ class PartLocation extends JsonResource
             'short_description' => trim($this->SHORTCODE),
             'cost' => $this->COST,
             'retail' => (double)$this->RETAIL,
+            'netretail'=>(double)$this->NETRETAIL,
             'status' => $this->STATUS,
             'master_code' => $this->MASTERCODE,
             'bs_unit' => $this->BSUNIT,

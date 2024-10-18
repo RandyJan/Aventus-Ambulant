@@ -38,7 +38,7 @@ class OrderSlipHeader extends Model
         'TOTALAMOUNT',
         'NETAMOUNT',
         'IS_SC',
-        'ACCOUNTTYPE',              // identifier for confirmed order
+        'ACCOUNTTYPE',              // 1 private : 2 corporate
         'OSTYPE',                   // 1 = "DINE IN" , 2 = "TAKE OUT"
         'SERVICE_CHARGE_AMT',
         'SERVICE_CHARGE_PERCENTAGE',

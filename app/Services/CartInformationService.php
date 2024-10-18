@@ -86,7 +86,9 @@ class CartInformationService
                 'customer_name' => $os->CUSTOMERNAME,
                 'order_type'            => trim($os->OSTYPE),
                 'service_charge_percentage' => $os->SERVICE_CHARGE_PERCENTAGE,
-                'service_charge_amount' => number_format($os->SERVICE_CHARGE_AMT, 2)
+                'service_charge_amount' => number_format($os->SERVICE_CHARGE_AMT, 2),
+                'accounttype'=>$os->ACCOUNTTYPE
+           
             ];
 
             $osd = OrderSlipDetail::with(['product'])

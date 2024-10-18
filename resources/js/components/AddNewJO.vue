@@ -3,16 +3,16 @@
       <h2>New Job Order</h2>
       <div>
         <label for="orderslipNo">Job Order Number:</label>
-        <input type="text" id="orderslipNo" v-model="orderslipNo" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-md sm:text-sm border-gray-300"/>
+        <input type="text" id="orderslipNo" v-model="orderslipNo" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-md sm:text-sm border-gray-300" required/>
       </div>
       <div>
         <label for="customerName">Patient Name:</label>
-        <input type="text" id="customerName" v-model="customerName" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-md sm:text-sm border-gray-300"/>
+        <input type="text" id="customerName" v-model="customerName" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-md sm:text-sm border-gray-300" required/>
       </div>
       <div class="relative inline-block text-left">
         <div>
           <label>Account Type:</label><br/>
-          <button type="button" class="inline-flex  justify-center gap-x-0.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="menu-button" aria-expanded="false" aria-haspopup="true" @click = "isOpen">
+          <button type="button" class="inline-flex  justify-center gap-x-0.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50" id="menu-button" aria-expanded="false" aria-haspopup="true" @click = "isOpen" aria-required="true">
           {{ accountType == 0? 'Select':accountType == 1?'Private':'Corporate'}}
           
           <!-- {{accountTypeString}} -->
@@ -39,6 +39,7 @@
     </template>
     
     <script>
+import Swal from "sweetalert2";
 import { mapGetters, mapMutations } from "vuex";
 
     export default {
@@ -95,6 +96,16 @@ import { mapGetters, mapMutations } from "vuex";
           this.isOpen();
         },
       createNewOrderslip() {
+        
+        if(this.orderslipNo == null || this.customerName == null || this.orderslipNo == '' || this.customerName == '')
+                    {
+                      console.log("true");
+                      toast.fire({
+                                title: "Invalid input",
+                                icon:"error"
+                            });
+                      return
+                    }
             swal.fire({
                 title: "Are you sure?",
                 text: "This action will create a new Transaction!",
@@ -120,7 +131,7 @@ import { mapGetters, mapMutations } from "vuex";
                     //         service_charge_percentage:
                     //             this.get_settings.service_charge_percentage,
                     //     })
-                    console.log("test");
+                
                     console.log(this.get_auth.branch.id);
                        axios.post("/orderslips", {
                             branch_id: this.get_auth.branch.id,
@@ -160,7 +171,6 @@ import { mapGetters, mapMutations } from "vuex";
             });
          },
       cancel() {
-        // Handle cancel logic here
         this.orderslipNo = '';
         this.customerName = '';
         window.location = "/";

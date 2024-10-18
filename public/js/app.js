@@ -4958,7 +4958,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -5006,6 +5008,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -5016,7 +5019,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     };
   },
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapMutations)(["open_the_cart"])), {}, {
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapMutations)(["open_the_cart"])), {}, {
     submit: function submit() {
       // Handle form submission logic here
       console.log('Submitted:', this.orderslipNo, this.customerName);
@@ -5056,6 +5059,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     createNewOrderslip: function createNewOrderslip() {
       var _this2 = this;
 
+      if (this.orderslipNo == null || this.customerName == null || this.orderslipNo == '' || this.customerName == '') {
+        console.log("true");
+        toast.fire({
+          title: "Invalid input",
+          icon: "error"
+        });
+        return;
+      }
+
       swal.fire({
         title: "Are you sure?",
         text: "This action will create a new Transaction!",
@@ -5079,7 +5091,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           //         service_charge_percentage:
           //             this.get_settings.service_charge_percentage,
           //     })
-          console.log("test");
           console.log(_this2.get_auth.branch.id);
           axios.post("/orderslips", {
             branch_id: _this2.get_auth.branch.id,
@@ -5115,13 +5126,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     cancel: function cancel() {
-      // Handle cancel logic here
       this.orderslipNo = '';
       this.customerName = '';
       window.location = "/";
     }
   }),
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)(["get_auth", "get_device", "if_can_process_order", "get_os_overview_status", "get_settings"]))
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapGetters)(["get_auth", "get_device", "if_can_process_order", "get_os_overview_status", "get_settings"]))
 });
 
 /***/ }),
@@ -6326,6 +6336,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       //   if (this.get_current_transaction.table_number == "") {
       //     return false;
       //}
+      //test
       //test
 
 
@@ -10289,15 +10300,18 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       outlet_categories: [],
       selected_category: null,
       search_category: 'All',
-      category_options: []
+      category_options: [],
+      account: 0
     };
   },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)(['get_auth', 'get_selected_store', 'get_product_overview_status'])),
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapGetters)(['get_auth', 'get_selected_store', "get_current_transaction", 'get_product_overview_status'])),
   methods: {
     fetchProducts: function fetchProducts() {
       var _this = this;
 
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+      console.log("current transaction");
+      console.log(this.get_current_transaction.accounttype);
       axios.get("/outlet-products", {
         params: {
           exclude_zero_price: true,
@@ -10306,10 +10320,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           search: this.search,
           group: this.selected_category,
           page: page !== null && page !== void 0 ? page : 1,
-          limit: 500
+          limit: 500,
+          accounttype: this.get_current_transaction.accounttype
         }
       }).then(function (res) {
         _this.products = JSON.parse(JSON.stringify(res.data));
+        _this.account = _this.get_current_transaction.accounttype;
+        console.log(res.data);
       })["catch"](function (err) {
         _this.products = null;
       });
@@ -62769,7 +62786,7 @@ var render = function () {
         ],
         staticClass:
           "focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-md sm:text-sm border-gray-300",
-        attrs: { type: "text", id: "orderslipNo" },
+        attrs: { type: "text", id: "orderslipNo", required: "" },
         domProps: { value: _vm.orderslipNo },
         on: {
           input: function ($event) {
@@ -62798,7 +62815,7 @@ var render = function () {
         ],
         staticClass:
           "focus:ring-indigo-500 focus:border-indigo-500 block w-full rounded-md sm:text-sm border-gray-300",
-        attrs: { type: "text", id: "customerName" },
+        attrs: { type: "text", id: "customerName", required: "" },
         domProps: { value: _vm.customerName },
         on: {
           input: function ($event) {
@@ -62826,6 +62843,7 @@ var render = function () {
               id: "menu-button",
               "aria-expanded": "false",
               "aria-haspopup": "true",
+              "aria-required": "true",
             },
             on: { click: _vm.isOpen },
           },
@@ -69014,7 +69032,11 @@ var render = function () {
                           [
                             _vm._v(
                               "\n                        " +
-                                _vm._s(item.retail) +
+                                _vm._s(
+                                  _vm.account == 1
+                                    ? item.retail
+                                    : item.netretail
+                                ) +
                                 "\n                    "
                             ),
                           ]

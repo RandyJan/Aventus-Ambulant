@@ -29,7 +29,8 @@ class PartLocation extends Model
         'PARTNO',
         'BRANCHID',
         'BUSUNIT',
-        'MASTERCODE'
+        'MASTERCODE',
+        'NETRETAIL'
     ];
 
     /**

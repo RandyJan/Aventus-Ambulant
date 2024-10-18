@@ -469,6 +469,7 @@ export default {
             discountedAmount:0,
             sc_count: 0,
             discountName:null,
+            account:0,
             tax_and_discount_template: {
                 service_charge: false,
                 service_charge_percentage: 0,
