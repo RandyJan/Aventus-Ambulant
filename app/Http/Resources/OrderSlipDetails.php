@@ -52,7 +52,8 @@ class OrderSlipDetails extends JsonResource
                 'group_serving'     => $this->GROUP_SERVING,
                 'confirmed_at'      => $this->CONFIRMED_AT,
                 'available'         => (int)$this->AVAILABLE,
-                'customer_name'     =>$this->CUSTOMERNAME
+                'customer_name'     =>$this->CUSTOMERNAME,
+                'acccounttype'=>$this->ACCOUNTTYPE
             ],
             // parent::toArray($request)
         );

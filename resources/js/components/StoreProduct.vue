@@ -483,7 +483,13 @@ export default {
             },
         };
     },
+    mounted() {
+        this.accounttypeFunction();
+    },
     methods: {
+        accounttypeFunction(){
+            account = this.get_current_transaction.accounttype;
+        },
           authentication(){
     var authres = false;
      Swal.fire({

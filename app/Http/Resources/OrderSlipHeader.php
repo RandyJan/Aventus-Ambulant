@@ -50,6 +50,7 @@ class OrderSlipHeader extends JsonResource
                 'sc_discount_percentage'    => $this->SC_DISCOUNT_PERCENTAGE,
                 'sc_discount_amount'        => $this->SC_DISCOUNT_AMOUNT,
                 'customer_name'             =>$this->CUSTOMERNAME,
+                'accounttype'               =>$this->ACCOUNTTYPE,
                 'tables' => $this->when(config('settings.app_type') == 'restaurant_ambulant', function() use($self){
                     // Log::debug('RESOURCE', [$self->BRANCHID]);
                     $tables = OrderslipTable::with(['table' => function($q) use($self){

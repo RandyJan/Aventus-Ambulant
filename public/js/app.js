@@ -5940,6 +5940,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -8829,6 +8837,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -9297,171 +9313,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
@@ -9510,6 +9361,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }).then(function (res) {
         _this.orderslips = JSON.parse(JSON.stringify(res.data));
+        console.log("orderslips");
+        console.log(res.data);
       })["catch"](function (error) {
         _this.orderslips = null;
       });
@@ -11513,6 +11366,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       discountedAmount: 0,
       sc_count: 0,
       discountName: null,
+      account: 0,
       tax_and_discount_template: {
         service_charge: false,
         service_charge_percentage: 0,
@@ -11525,7 +11379,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     };
   },
+  mounted: function mounted() {
+    this.accounttypeFunction();
+  },
   methods: {
+    accounttypeFunction: function accounttypeFunction() {
+      account = this.get_current_transaction.accounttype;
+    },
     authentication: function authentication() {
       var authres = false;
       sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
@@ -63803,6 +63663,28 @@ var render = function () {
                     },
                     [
                       _vm._v(
+                        "\n                            Account Type\n                            "
+                      ),
+                      _c("span", { staticClass: "font-extrabold text-lg" }, [
+                        _vm._v(
+                          _vm._s(
+                            _vm.get_current_transaction.accounttype == 1
+                              ? "Private"
+                              : "Corporate"
+                          )
+                        ),
+                      ]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    {
+                      staticClass:
+                        "text-sm flex justify-between items-center border-b border-gray-300 py-2 mt-2",
+                    },
+                    [
+                      _vm._v(
                         "\n                            Patient Name:\n                            "
                       ),
                       _c("span", { staticClass: "font-extrabold text-lg" }, [
@@ -66923,6 +66805,32 @@ var render = function () {
                           },
                           [
                             _vm._v(
+                              "\n                            Account Type\n                            "
+                            ),
+                            _c(
+                              "span",
+                              { staticClass: "font-extrabold text-lg" },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.order_summary.accounttype == 1
+                                      ? "Private"
+                                      : "Corporate"
+                                  )
+                                ),
+                              ]
+                            ),
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "text-sm flex justify-between items-center border-b border-gray-300 py-2 mt-2",
+                          },
+                          [
+                            _vm._v(
                               "\n                            Patient Name\n                            "
                             ),
                             _c(
@@ -67311,13 +67219,13 @@ var render = function () {
           ? _c("div", { staticClass: "flex items-center" }, [
               _c("span", { staticClass: "mr-2 text-sm text-gray-700" }, [
                 _vm._v(
-                  "\n                    Showing " +
+                  "\n                Showing " +
                     _vm._s(_vm.orderslips.meta.from) +
-                    " to\n                    " +
+                    " to\n                " +
                     _vm._s(_vm.orderslips.meta.to) +
-                    " of\n                    " +
+                    " of\n                " +
                     _vm._s(_vm.orderslips.meta.total) +
-                    " results\n                "
+                    " results\n            "
                 ),
               ]),
               _vm._v(" "),
@@ -67469,9 +67377,9 @@ var render = function () {
                               { staticClass: "text-white font-bold" },
                               [
                                 _vm._v(
-                                  "\n                                " +
+                                  "\n                            " +
                                     _vm._s(item.orderslip_code) +
-                                    "\n                            "
+                                    "\n                        "
                                 ),
                               ]
                             ),
@@ -67547,9 +67455,9 @@ var render = function () {
                               { staticClass: "text-sm truncate ml-2" },
                               [
                                 _vm._v(
-                                  "\n                                      \n                                    " +
+                                  "\n\n                                " +
                                     _vm._s(item.customer_name) +
-                                    "\n                                    \n                                "
+                                    "\n\n                            "
                                 ),
                               ]
                             ),
@@ -67588,13 +67496,60 @@ var render = function () {
                                     { staticClass: "text-sm truncate ml-2" },
                                     [
                                       _vm._v(
-                                        "\n                                    " +
+                                        "\n                                " +
                                           _vm._s(
                                             item.terminal != null
                                               ? item.terminal.description
                                               : ""
                                           ) +
-                                          "\n                                "
+                                          "\n                            "
+                                      ),
+                                    ]
+                                  ),
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _vm.get_settings.app_type == "restaurant_ambulant"
+                            ? _c(
+                                "div",
+                                { staticClass: "flex items-center mt-1" },
+                                [
+                                  _c(
+                                    "svg",
+                                    {
+                                      staticClass: "h-6 w-6",
+                                      attrs: {
+                                        xmlns: "http://www.w3.org/2000/svg",
+                                        fill: "none",
+                                        viewBox: "0 0 24 24",
+                                        stroke: "currentColor",
+                                      },
+                                    },
+                                    [
+                                      _c("path", {
+                                        attrs: {
+                                          "stroke-linecap": "round",
+                                          "stroke-linejoin": "round",
+                                          "stroke-width": "2",
+                                          d: "M7 8h10M7 12h10m-7 4h7M5 8l2-2m0 0l2 2m-2-2v12",
+                                        },
+                                      }),
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "div",
+                                    { staticClass: "text-sm truncate ml-2" },
+                                    [
+                                      _vm._v(
+                                        "\n\n                                " +
+                                          _vm._s(
+                                            item.accounttype == 1
+                                              ? "Private"
+                                              : "Corporate"
+                                          ) +
+                                          "\n                            "
                                       ),
                                     ]
                                   ),
@@ -67635,15 +67590,15 @@ var render = function () {
                                     { staticClass: "text-sm truncate ml-2" },
                                     [
                                       _vm._v(
-                                        "\n                                   " +
+                                        "\n                                " +
                                           _vm._s(item.created_date) +
                                           " "
                                       ),
                                       _c("br"),
                                       _vm._v(
-                                        "\n                                    " +
+                                        "\n                                " +
                                           _vm._s(item.created_time) +
-                                          "\n                                "
+                                          "\n                            "
                                       ),
                                     ]
                                   ),
@@ -67872,13 +67827,13 @@ var render = function () {
             _c("div", { staticClass: "flex items-center" }, [
               _c("span", { staticClass: "mr-2 text-sm text-gray-700" }, [
                 _vm._v(
-                  "\n                    Showing " +
+                  "\n                Showing " +
                     _vm._s(_vm.orderslips.meta.from) +
-                    " to\n                    " +
+                    " to\n                " +
                     _vm._s(_vm.orderslips.meta.to) +
-                    " of\n                    " +
+                    " of\n                " +
                     _vm._s(_vm.orderslips.meta.total) +
-                    " results\n                "
+                    " results\n            "
                 ),
               ]),
               _vm._v(" "),
@@ -68013,7 +67968,7 @@ var render = function () {
             ),
             _vm._v(" "),
             _c("p", { staticClass: "mt-1 text-sm text-gray-500 font-medium" }, [
-              _vm._v("\n                Nothing to display.\n            "),
+              _vm._v("\n            Nothing to display.\n        "),
             ]),
           ])
         : _vm._e(),
@@ -68058,7 +68013,7 @@ var staticRenderFns = [
             "inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-sky-700 bg-sky-100 hover:bg-sky-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500",
           attrs: { href: "/AddNewJO" },
         },
-        [_vm._v("\n                    New Transaction\n            ")]
+        [_vm._v("\n                New Transaction\n            ")]
       ),
     ])
   },

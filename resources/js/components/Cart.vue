@@ -419,6 +419,14 @@
                             <div
                                 class="text-sm flex justify-between items-center border-b border-gray-300 py-2 mt-2"
                             >
+                                Account Type
+                                <span class="font-extrabold text-lg">{{
+                                    get_current_transaction.accounttype == 1?"Private":"Corporate"
+                                }}</span>
+                            </div> 
+                            <div
+                                class="text-sm flex justify-between items-center border-b border-gray-300 py-2 mt-2"
+                            >
                                 Patient Name:
                                 <span class="font-extrabold text-lg">{{
                                     get_current_transaction.customer_name
