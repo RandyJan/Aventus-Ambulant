@@ -36,10 +36,12 @@
                         <span
                             class="flex-shrink-0 flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-gray-600 text-gray-50">
                             {{
-                                get_selected_store_product
-                                    ? get_selected_store_product.retail
-                                    : null
-                            }}
+                                // get_selected_store_product
+                                //     ? get_selected_store_product.retail
+                                //     : null
+                                get_current_transaction.accounttype ==1? get_selected_store_product.retail:get_selected_store_product.netretail
+
+}}
                         </span>
                     </div>
 
@@ -593,7 +595,6 @@ export default {
             
         },
         discountBtn() {
-            if(this.authentication()){
                 this.isApplyDisc = ! this.isApplyDisc;
                 console.log('authentication success');
             axios.get(`/getDiscounts`)
@@ -611,10 +612,7 @@ export default {
                             });
                             // console.log( error.response.data.message);
                         });
-                    }
-                    else{
-    return
-}
+    
         },
         minusQtySCPWD() {
             if (this.sc_count == 0) {
@@ -1153,7 +1151,7 @@ export default {
             net_amount: 0,
             modified_quantity: 1,
             notes: "",
-            retail_price: this.get_selected_store_product.retail,
+            retail_price: this.get_current_transaction.accounttype==1?this.get_selected_store_product.retail:this.get_selected_store_product.netretail,
             isDiscounted:0,
             discId: 0,
         };

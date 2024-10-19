@@ -11351,6 +11351,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -11481,24 +11483,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     discountBtn: function discountBtn() {
       var _this = this;
 
-      if (this.authentication()) {
-        this.isApplyDisc = !this.isApplyDisc;
-        console.log('authentication success');
-        axios.get("/getDiscounts").then(function (res) {
-          _this.discounts = JSON.parse(JSON.stringify(res.data)); // toast.fire({
-          //     title: "Request successful",
-          // });
+      this.isApplyDisc = !this.isApplyDisc;
+      console.log('authentication success');
+      axios.get("/getDiscounts").then(function (res) {
+        _this.discounts = JSON.parse(JSON.stringify(res.data)); // toast.fire({
+        //     title: "Request successful",
+        // });
 
-          console.log(_this.discounts);
-        })["catch"](function (error) {
-          toast.fire({
-            icon: "warning",
-            title: error.response.data.message
-          }); // console.log( error.response.data.message);
-        });
-      } else {
-        return;
-      }
+        console.log(_this.discounts);
+      })["catch"](function (error) {
+        toast.fire({
+          icon: "warning",
+          title: error.response.data.message
+        }); // console.log( error.response.data.message);
+      });
     },
     minusQtySCPWD: function minusQtySCPWD() {
       if (this.sc_count == 0) {
@@ -11983,7 +11981,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       net_amount: 0,
       modified_quantity: 1,
       notes: "",
-      retail_price: this.get_selected_store_product.retail,
+      retail_price: this.get_current_transaction.accounttype == 1 ? this.get_selected_store_product.retail : this.get_selected_store_product.netretail,
       isDiscounted: 0,
       discId: 0
     });
@@ -70121,9 +70119,12 @@ var render = function () {
                 _vm._v(
                   "\n                            " +
                     _vm._s(
-                      _vm.get_selected_store_product
+                      // get_selected_store_product
+                      //     ? get_selected_store_product.retail
+                      //     : null
+                      _vm.get_current_transaction.accounttype == 1
                         ? _vm.get_selected_store_product.retail
-                        : null
+                        : _vm.get_selected_store_product.netretail
                     ) +
                     "\n                        "
                 ),
