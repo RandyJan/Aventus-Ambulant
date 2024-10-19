@@ -590,12 +590,83 @@ export default {
             this.closeDisc();
 
         },
+        authDisc(){
+            swal.fire({
+                    title: "Supervisor",
+                    html: `
+                        <div class="text-left p-2">
+
+                            <div>
+                                <label for="username" class="block text-sm font-medium text-gray-700">
+                                    Username
+                                </label>
+                                <div class="mt-1">
+                                    <input type="text" id="username" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="">
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <label for="password" class="block text-sm font-medium text-gray-700">
+                                    Password
+                                </label>
+                                <div class="mt-1">
+                                    <input type="password" name="password" id="password" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="">
+                                </div>
+                            </div>
+
+                        </div>
+                    `,
+                    confirmButtonText: "Continue",
+                    cancelButtonText: "Cancel",
+                    customClass: {
+                        confirmButton:
+                            "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500",
+                        cancelButton:
+                            "ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500",
+                    },
+                    showCancelButton: true,
+                    buttonsStyling: false,
+                    focusConfirm: false,
+                    preConfirm: () => {
+                        var username =
+                            document.getElementById("username").value;
+                        var password =
+                            document.getElementById("password").value;
+
+                        axios
+                            .post(`/authdisc`, {
+                                data: {
+                                    // os_number: item.os_number,
+                                    // product_id: item.product_id,
+                                    // sequence: item.sequence,
+                                    supervisor: {
+                                        username: username,
+                                        password: password,
+                                    },
+                                },
+                            })
+                            .then((res) => {
+                                if(res.data == true){
+                                    this.isApplyDisc = !this.isApplyDisc;
+
+                                }
+                            })
+                            .catch((error) => {
+                                toast.fire({
+                                    icon: "warning",
+                                    title: error.response.data.message,
+                                });
+                                return false;
+                            });
+                    },
+                });
+        },
         closeDisc(){
             this.isApplyDisc = !this.isApplyDisc;
             
         },
         discountBtn() {
-                this.isApplyDisc = ! this.isApplyDisc;
+            this.authDisc();
                 console.log('authentication success');
             axios.get(`/getDiscounts`)
                         .then((res) => {

@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class CartItemController extends Controller
 {
@@ -318,7 +319,35 @@ class CartItemController extends Controller
             ], 500);
         }
     }
-
+    public function authenticateForDisc(Request $request){
+        try{
+            Log::info($request);
+            // DB::beginTransaction();
+            $user = User::where('NUMBER',$request['data']['supervisor']['username'])
+                        ->where('PW',$request['data']['supervisor']['password'])
+                        ->first();
+                        Log::info($user);
+                        if(!$user){
+                            return response()->json([
+                                'message'=>'User not found!'
+                            ],404);
+                        }
+                        if(!$user['AUTH:DISC']==1 || !$user['AUTH:DISC']=='1'){
+                            return response()->json([
+                                'message'=>'User is not allowed to apply discount'
+                            ],401);
+                        }
+                        return true;
+                        
+        }
+        catch(Exception $e){
+            // DB::rollBack();
+            return response()->json([
+                'message' => $e->getMessage(),
+                'system_message' => $e->getMessage()
+            ], 500);
+        }
+    }
     public function destroy(Request $request){
         try{
             DB::beginTransaction();

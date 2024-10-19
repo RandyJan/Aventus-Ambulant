@@ -42,7 +42,8 @@ class OrderSlipHeader extends Model
         'OSTYPE',                   // 1 = "DINE IN" , 2 = "TAKE OUT"
         'SERVICE_CHARGE_AMT',
         'SERVICE_CHARGE_PERCENTAGE',
-        'CUSTOMERNAME'
+        'CUSTOMERNAME',
+        'TOTALHEADCOUNT'
     ];
 
     protected $appends = [

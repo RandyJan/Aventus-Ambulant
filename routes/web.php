@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\LookUpController;
 use App\Http\Controllers\OrderslipController;
 use App\Http\Resources\OrderSlip;
@@ -103,7 +104,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/AddNewJO',[OrderslipController::class,'AddNewJO']);
     Route::get('/getDiscounts', [LookUpController::class, 'getDiscount']);
-
+    Route::post('/authdisc',[CartItemController::class,'authenticateForDisc']);
 });
 
 Route::get('/app-setting', [App\Http\Controllers\AppSettingController::class, 'index']);

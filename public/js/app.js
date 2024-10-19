@@ -5981,6 +5981,53 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         _this.fetchCurrentTransaction();
       });
     },
+    authDisc: function authDisc() {
+      var _this2 = this;
+
+      swal.fire({
+        title: "Supervisor",
+        html: "\n                        <div class=\"text-left p-2\">\n\n                            <div>\n                                <label for=\"username\" class=\"block text-sm font-medium text-gray-700\">\n                                    Username\n                                </label>\n                                <div class=\"mt-1\">\n                                    <input type=\"text\" id=\"username\" class=\"shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md\" placeholder=\"\">\n                                </div>\n                            </div>\n\n                            <div class=\"mt-4\">\n                                <label for=\"password\" class=\"block text-sm font-medium text-gray-700\">\n                                    Password\n                                </label>\n                                <div class=\"mt-1\">\n                                    <input type=\"password\" name=\"password\" id=\"password\" class=\"shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md\" placeholder=\"\">\n                                </div>\n                            </div>\n\n                        </div>\n                    ",
+        confirmButtonText: "Continue",
+        cancelButtonText: "Cancel",
+        customClass: {
+          confirmButton: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500",
+          cancelButton: "ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        },
+        showCancelButton: true,
+        buttonsStyling: false,
+        focusConfirm: false,
+        preConfirm: function preConfirm() {
+          var username = document.getElementById("username").value;
+          var password = document.getElementById("password").value;
+          axios.post("/authdisc", {
+            data: {
+              // os_number: item.os_number,
+              // product_id: item.product_id,
+              // sequence: item.sequence,
+              supervisor: {
+                username: username,
+                password: password
+              }
+            }
+          }).then(function (res) {
+            if (res.data == true) {
+              _this2.create_sc_modal = {
+                os_number: _this2.get_current_transaction.orderslip_number,
+                branch_id: _this2.get_auth.branch.id
+              };
+            }
+
+            _this2.close();
+          })["catch"](function (error) {
+            toast.fire({
+              icon: "warning",
+              title: error.response.data.message
+            });
+            return false;
+          });
+        }
+      });
+    },
     is_allow_to_remove_item: function is_allow_to_remove_item(item) {
       if (this.get_settings.app_type == "restaurant_ambulant") {
         if (item.confirmed_at != null) {
@@ -5991,7 +6038,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return true;
     },
     rePrintConfirmOrder: function rePrintConfirmOrder() {
-      var _this2 = this;
+      var _this3 = this;
 
       confirm.fire({
         text: "This action will print all the list of items to the designated location" // confirmButtonText: 'Proceed to update Table number.',
@@ -5999,11 +6046,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (result) {
         if (result.isConfirmed) {
           axios.post("/reprint-order-in-kitchen", {
-            orderslip_number: _this2.get_current_transaction.orderslip_number
+            orderslip_number: _this3.get_current_transaction.orderslip_number
           }).then(function (res) {
             debug(res);
 
-            _this2.$store.dispatch("fetchCurrentTransaction");
+            _this3.$store.dispatch("fetchCurrentTransaction");
 
             toast.fire({
               title: "RePrinted Successfully."
@@ -6015,7 +6062,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     confirmOrder: function confirmOrder() {
-      var _this3 = this;
+      var _this4 = this;
 
       if (!this.enable_confirm_button) {
         return;
@@ -6027,11 +6074,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (result) {
         if (result.isConfirmed) {
           axios.patch("/confirm-order", {
-            orderslip_number: _this3.get_current_transaction.orderslip_number
+            orderslip_number: _this4.get_current_transaction.orderslip_number
           }).then(function (res) {
             debug(res);
 
-            _this3.$store.dispatch("fetchCurrentTransaction");
+            _this4.$store.dispatch("fetchCurrentTransaction");
 
             toast.fire({
               title: "Successfully confirmed."
@@ -6043,7 +6090,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     updateTotalHeadcount: function updateTotalHeadcount() {
-      var _this4 = this;
+      var _this5 = this;
 
       swal.fire({
         title: "Enter Total Head Count #",
@@ -6059,7 +6106,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
       }).then(function (result) {
         if (result.value) {
-          if (_this4.get_current_transaction.sc_records.length > 0 && result.value < _this4.get_current_transaction.sc_records.length) {
+          if (_this5.get_current_transaction.sc_records.length > 0 && result.value < _this5.get_current_transaction.sc_records.length) {
             toast.fire({
               title: "Must not be less than the total Senior Record.",
               icon: "warning"
@@ -6069,11 +6116,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
           axios.patch("/total-head-count", {
             value: result.value.trim(),
-            orderslip_number: _this4.get_current_transaction.orderslip_number
+            orderslip_number: _this5.get_current_transaction.orderslip_number
           }).then(function (res) {
             debug(res);
 
-            _this4.$store.dispatch("fetchCurrentTransaction");
+            _this5.$store.dispatch("fetchCurrentTransaction");
 
             toast.fire({
               title: "Total Head Count updated Successfully!"
@@ -6085,7 +6132,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     updatePlateNumber: function updatePlateNumber() {
-      var _this5 = this;
+      var _this6 = this;
 
       swal.fire({
         title: "Enter Nick Name",
@@ -6104,11 +6151,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           // debug(result.value);
           axios.patch("/plate-number", {
             plate_number: result.value.trim(),
-            orderslip_number: _this5.get_current_transaction.orderslip_number
+            orderslip_number: _this6.get_current_transaction.orderslip_number
           }).then(function (res) {
             debug(res);
 
-            _this5.$store.dispatch("updateCurrentTransactionPlateNumber", result.value.trim());
+            _this6.$store.dispatch("updateCurrentTransactionPlateNumber", result.value.trim());
 
             toast.fire({
               title: "Nick Name updated Successfully!"
@@ -6169,7 +6216,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.item_selected_for_edit = null;
     },
     changeSCStatus: function changeSCStatus() {
-      var _this6 = this;
+      var _this7 = this;
 
       // if(!this.get_current_transaction.is_sc){
       axios.patch("/orderslip-senior-status", {
@@ -6177,7 +6224,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         os_number: this.get_current_transaction.orderslip_number,
         sc_status: !this.get_current_transaction.is_sc == true ? 0 : 1
       }).then(function (res) {
-        _this6.$store.dispatch("fetchCurrentTransaction");
+        _this7.$store.dispatch("fetchCurrentTransaction");
       });
       return;
     },
@@ -6190,10 +6237,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         return;
       }
 
-      this.create_sc_modal = {
-        os_number: this.get_current_transaction.orderslip_number,
-        branch_id: this.get_auth.branch.id
-      };
+      this.authDisc(); // this.create_sc_modal = {
+      //     os_number: this.get_current_transaction.orderslip_number,
+      //     branch_id: this.get_auth.branch.id,
+      // };
     },
     closeCreateSeniorModal: function closeCreateSeniorModal() {
       this.create_sc_modal = null;
@@ -6205,7 +6252,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.edit_sc_modal = null;
     },
     removeSenior: function removeSenior(item) {
-      var _this7 = this;
+      var _this8 = this;
 
       confirm.fire({
         text: "This action will remove selected senior data." // confirmButtonText: 'Proceed to update Table number.',
@@ -6213,13 +6260,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (result) {
         if (result.isConfirmed) {
           axios["delete"]("/orderslip-seniors/".concat(item.ID)).then(function (res) {
-            _this7.$store.dispatch("fetchCurrentTransaction");
+            _this8.$store.dispatch("fetchCurrentTransaction");
           });
         }
       });
     },
     removeItem: function removeItem(item) {
-      var _this8 = this;
+      var _this9 = this;
 
       if (this.get_settings.app_type == "restaurant_ambulant") {
         swal.fire({
@@ -6249,9 +6296,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 }
               }
             }).then(function (res) {
-              _this8.$store.dispatch("fetchCurrentTransaction");
+              _this9.$store.dispatch("fetchCurrentTransaction");
 
-              _this8.close();
+              _this9.close();
             })["catch"](function (error) {
               toast.fire({
                 icon: "warning",
@@ -6280,13 +6327,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               title: res.data.message
             });
 
-            _this8.$store.dispatch("fetchCurrentTransaction");
+            _this9.$store.dispatch("fetchCurrentTransaction");
           });
         }
       });
     },
     onCustomerDisplay: function onCustomerDisplay() {
-      var _this9 = this;
+      var _this10 = this;
 
       axios.patch("/customer-display", {
         device_id: this.get_auth.terminal.id,
@@ -6294,12 +6341,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         os_number: this.get_current_transaction.orderslip_number,
         customer_display: !this.get_current_transaction.customer_display == true ? 0 : 1
       }).then(function (res) {
-        _this9.$store.dispatch("fetchCurrentTransaction");
+        _this10.$store.dispatch("fetchCurrentTransaction");
       });
       return;
     },
     shellConfirmOrder: function shellConfirmOrder() {
-      var _this10 = this;
+      var _this11 = this;
 
       // debug("shell confirm order...");
       confirm.fire({
@@ -6310,12 +6357,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           //     "OS No. " +
           //         this.get_current_transaction.orderslip_number
           // );
-          axios.patch("/shell-confirm-order/".concat(_this10.get_current_transaction.orderslip_number)).then(function (res) {
+          axios.patch("/shell-confirm-order/".concat(_this11.get_current_transaction.orderslip_number)).then(function (res) {
             toast.fire({
               title: res.data.message
             });
 
-            _this10.$store.dispatch("fetchCurrentTransaction");
+            _this11.$store.dispatch("fetchCurrentTransaction");
           })["catch"](function (error) {
             debug(error.response.data);
             toast.fire({
@@ -11477,20 +11524,62 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.discountName = description;
       this.closeDisc();
     },
+    authDisc: function authDisc() {
+      var _this = this;
+
+      swal.fire({
+        title: "Supervisor",
+        html: "\n                        <div class=\"text-left p-2\">\n\n                            <div>\n                                <label for=\"username\" class=\"block text-sm font-medium text-gray-700\">\n                                    Username\n                                </label>\n                                <div class=\"mt-1\">\n                                    <input type=\"text\" id=\"username\" class=\"shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md\" placeholder=\"\">\n                                </div>\n                            </div>\n\n                            <div class=\"mt-4\">\n                                <label for=\"password\" class=\"block text-sm font-medium text-gray-700\">\n                                    Password\n                                </label>\n                                <div class=\"mt-1\">\n                                    <input type=\"password\" name=\"password\" id=\"password\" class=\"shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md\" placeholder=\"\">\n                                </div>\n                            </div>\n\n                        </div>\n                    ",
+        confirmButtonText: "Continue",
+        cancelButtonText: "Cancel",
+        customClass: {
+          confirmButton: "inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500",
+          cancelButton: "ml-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+        },
+        showCancelButton: true,
+        buttonsStyling: false,
+        focusConfirm: false,
+        preConfirm: function preConfirm() {
+          var username = document.getElementById("username").value;
+          var password = document.getElementById("password").value;
+          axios.post("/authdisc", {
+            data: {
+              // os_number: item.os_number,
+              // product_id: item.product_id,
+              // sequence: item.sequence,
+              supervisor: {
+                username: username,
+                password: password
+              }
+            }
+          }).then(function (res) {
+            if (res.data == true) {
+              _this.isApplyDisc = !_this.isApplyDisc;
+            }
+          })["catch"](function (error) {
+            toast.fire({
+              icon: "warning",
+              title: error.response.data.message
+            });
+            return false;
+          });
+        }
+      });
+    },
     closeDisc: function closeDisc() {
       this.isApplyDisc = !this.isApplyDisc;
     },
     discountBtn: function discountBtn() {
-      var _this = this;
+      var _this2 = this;
 
-      this.isApplyDisc = !this.isApplyDisc;
+      this.authDisc();
       console.log('authentication success');
       axios.get("/getDiscounts").then(function (res) {
-        _this.discounts = JSON.parse(JSON.stringify(res.data)); // toast.fire({
+        _this2.discounts = JSON.parse(JSON.stringify(res.data)); // toast.fire({
         //     title: "Request successful",
         // });
 
-        console.log(_this.discounts);
+        console.log(_this2.discounts);
       })["catch"](function (error) {
         toast.fire({
           icon: "warning",
@@ -11541,7 +11630,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.taxAndDiscountUpdater();
     },
     submit: function submit() {
-      var _this2 = this;
+      var _this3 = this;
 
       if (this.main.modified_quantity == 0) {
         return;
@@ -11550,24 +11639,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       confirm.fire({}).then(function (result) {
         if (result.isConfirmed) {
           axios.post("/add-to-cart", {
-            orderslip_number: _this2.get_current_transaction.orderslip_number,
-            product: _this2.main,
-            notes: _this2.main.notes,
-            non_modifiable: _this2.non_modifiable,
-            modifiable: _this2.modifiable,
-            senior_headcount: _this2.sc_count // regular_headcount: this.regular_headcount,
+            orderslip_number: _this3.get_current_transaction.orderslip_number,
+            product: _this3.main,
+            notes: _this3.main.notes,
+            non_modifiable: _this3.non_modifiable,
+            modifiable: _this3.modifiable,
+            senior_headcount: _this3.sc_count // regular_headcount: this.regular_headcount,
 
           }).then(function (res) {
             toast.fire({
               title: "Successfully added"
             });
 
-            _this2.$store.dispatch("fetchCurrentTransaction");
+            _this3.$store.dispatch("fetchCurrentTransaction");
 
             console.log('this is it');
-            console.log(_this2.get_current_transaction);
+            console.log(_this3.get_current_transaction);
 
-            _this2.close();
+            _this3.close();
           })["catch"](function (error) {
             toast.fire({
               icon: "warning",
@@ -11578,7 +11667,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     fetchComponents: function fetchComponents() {
-      var _this3 = this;
+      var _this4 = this;
 
       axios.get("/postmixes", {
         params: {
@@ -11589,28 +11678,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }).then(function (res) {
         res.data.data.forEach(function (el) {
           if (!el.is_modifiable) {
-            _this3.non_modifiable.push(_objectSpread({}, el));
+            _this4.non_modifiable.push(_objectSpread({}, el));
           }
 
           if (el.is_modifiable) {
-            _this3.modifiable.push(_objectSpread(_objectSpread({}, el), {}, {
+            _this4.modifiable.push(_objectSpread(_objectSpread({}, el), {}, {
               group_products: []
             }));
           }
         });
 
-        _this3.fetchProductsWithSameCategoryOfModifiableComponent();
+        _this4.fetchProductsWithSameCategoryOfModifiableComponent();
       })["catch"](function (error) {});
     },
     fetchProductsWithSameCategoryOfModifiableComponent: function fetchProductsWithSameCategoryOfModifiableComponent() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.modifiable.forEach(function (el) {
         axios.get("/outlet-products", {
           params: {
             include_zero_price: true,
-            branch_id: _this4.get_selected_store_product.branch_id,
-            outlet_id: _this4.get_selected_store_product.outlet_id,
+            branch_id: _this5.get_selected_store_product.branch_id,
+            outlet_id: _this5.get_selected_store_product.outlet_id,
             // group: el.group_code,
             category: el.category_code,
             limit: 100
@@ -11622,7 +11711,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           main_el = main_el[0];
           res.data.data.forEach(function (e) {
             if (el.child_product_id != e.product_id) {
-              el.group_products.push(_objectSpread(_objectSpread(_objectSpread({}, e), JSON.parse(JSON.stringify(_this4.tax_and_discount_template))), {}, {
+              el.group_products.push(_objectSpread(_objectSpread(_objectSpread({}, e), JSON.parse(JSON.stringify(_this5.tax_and_discount_template))), {}, {
                 amount: 0,
                 net_amount: 0,
                 retail_price: e.retail > main_el.retail ? e.retail - main_el.retail : 0,
@@ -11634,10 +11723,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     },
     updateComponents: function updateComponents(action) {
-      var _this5 = this;
+      var _this6 = this;
 
       this.non_modifiable.forEach(function (el) {
-        el.modified_quantity = el.child_quantity * _this5.qty;
+        el.modified_quantity = el.child_quantity * _this6.qty;
       });
       this.modifiable.forEach(function (el) {
         if (action == "plus") {
@@ -11682,12 +11771,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       child.modified_quantity += 1;
     },
     taxAndDiscountUpdater: function taxAndDiscountUpdater() {
-      var _this6 = this;
+      var _this7 = this;
 
       this.compute_tax_and_discount(this.main);
       this.modifiable.forEach(function (el) {
         el.group_products.forEach(function (e) {
-          _this6.compute_tax_and_discount(e);
+          _this7.compute_tax_and_discount(e);
         });
       });
     },
@@ -11967,7 +12056,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   }),
   created: function created() {
-    var _this7 = this;
+    var _this8 = this;
 
     if (this.get_settings.service_charge == true) {
       console.log("service charge is enable...");
@@ -11987,7 +12076,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     });
     this.compute_tax_and_discount(this.main);
     this.get_current_transaction.sc_records.forEach(function (el) {
-      _this7.sc_records.push(_objectSpread({}, JSON.parse(JSON.stringify(el))));
+      _this8.sc_records.push(_objectSpread({}, JSON.parse(JSON.stringify(el))));
     });
   }
 });
