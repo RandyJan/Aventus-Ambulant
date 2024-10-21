@@ -67,7 +67,7 @@ class OrderSlipDetail extends Model
         'CONFIRMED_AT',     // identifier for confirmed order
         'PRODUCTGROUP',
         'PSTATUS',          // identifier for confirmed order
-        
+        'DISCOUNT'
     ];
 
     /**

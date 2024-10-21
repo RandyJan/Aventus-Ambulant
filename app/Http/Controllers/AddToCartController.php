@@ -80,6 +80,7 @@ class AddToCartController extends Controller
                 'GROUP_SERVING' => $request->product['group_serving'],
                 'PRODUCTGROUP' => $request->product['location'],
                 'PSTATUS' => 0,
+                'DISCOUNT'=>$request->product['discount']
             ]);
             $line_number++;
 

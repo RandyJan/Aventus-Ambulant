@@ -327,7 +327,7 @@
         Discount {{ discountName?"("+discountName+")":'' }}
     </span>
     <span class="pr-3 pl-2 bg-gray-100 text-sm font-medium text-gray-700">
-        {{ sc_discount_amount.toFixed(2) }}
+        {{ discountAmount!=0?discountAmount.toFixed(2):sc_discount_amount.toFixed(2) }}
     </span>
 </div>
 </div>
@@ -468,6 +468,7 @@ export default {
             modifiable: [],
             sc_records: [],
             discounts:null,
+            discountAmount:0,
             discountedAmount:0,
             sc_count: 0,
             discountName:null,
@@ -563,16 +564,21 @@ export default {
             }
             console.log("dis one");
             console.log(items);
-            var basePrice =items.net_amount;
+            var basePrice =items.retail_price;
             var vatAmt = items.vat_amount;
-            var lessVatPrice = basePrice-vatAmt;
+            // var lessVatPrice = basePrice-vatAmt;
             var discValue = isPercent == 1? value/100:value;
 
-            var discAmt = isPercent == 1 ? lessVatPrice * discValue:discValue;
-            var discountedPrice = lessVatPrice - discAmt;
+            var discAmt = isPercent == 1 ? basePrice * discValue:discValue;
+            var discountedPrice = basePrice - discAmt;
             this.discountedAmount = discountedPrice;
-            items.sc_discount_amount = discAmt;
-            items.sc_discount_percentage =value;
+            items.discount = discAmt;
+            this.discountAmount = discAmt;
+
+            items.vatable_sales = discountedPrice / 1.12;
+            items.vat_amount =discountedPrice -(discountedPrice/1.12) ;
+            // items.sc_discount_amount = discAmt;
+            // items.sc_discount_percentage =value;
             items.discId = disc_id;
      if(value == 20)
             {      items.vat_ex = lessVatPrice;
@@ -666,6 +672,13 @@ export default {
             
         },
         discountBtn() {
+        if(this.sc_count > 0){
+            toast.fire({
+                title:"Product is already discounted",
+                icon:"error"
+        });
+        return;
+        }
             this.authDisc();
                 console.log('authentication success');
             axios.get(`/getDiscounts`)
@@ -1225,6 +1238,7 @@ export default {
             retail_price: this.get_current_transaction.accounttype==1?this.get_selected_store_product.retail:this.get_selected_store_product.netretail,
             isDiscounted:0,
             discId: 0,
+            discount:0,
         };
         this.compute_tax_and_discount(this.main);
 

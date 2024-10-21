@@ -5948,6 +5948,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -11412,6 +11422,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       modifiable: [],
       sc_records: [],
       discounts: null,
+      discountAmount: 0,
       discountedAmount: 0,
       sc_count: 0,
       discountName: null,
@@ -11496,15 +11507,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       console.log("dis one");
       console.log(items);
-      var basePrice = items.net_amount;
-      var vatAmt = items.vat_amount;
-      var lessVatPrice = basePrice - vatAmt;
+      var basePrice = items.retail_price;
+      var vatAmt = items.vat_amount; // var lessVatPrice = basePrice-vatAmt;
+
       var discValue = isPercent == 1 ? value / 100 : value;
-      var discAmt = isPercent == 1 ? lessVatPrice * discValue : discValue;
-      var discountedPrice = lessVatPrice - discAmt;
+      var discAmt = isPercent == 1 ? basePrice * discValue : discValue;
+      var discountedPrice = basePrice - discAmt;
       this.discountedAmount = discountedPrice;
-      items.sc_discount_amount = discAmt;
-      items.sc_discount_percentage = value;
+      items.discount = discAmt;
+      this.discountAmount = discAmt;
+      items.vatable_sales = discountedPrice / 1.12;
+      items.vat_amount = discountedPrice - discountedPrice / 1.12; // items.sc_discount_amount = discAmt;
+      // items.sc_discount_percentage =value;
+
       items.discId = disc_id;
 
       if (value == 20) {
@@ -11571,6 +11586,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     discountBtn: function discountBtn() {
       var _this2 = this;
+
+      if (this.sc_count > 0) {
+        toast.fire({
+          title: "Product is already discounted",
+          icon: "error"
+        });
+        return;
+      }
 
       this.authDisc();
       console.log('authentication success');
@@ -12072,7 +12095,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       notes: "",
       retail_price: this.get_current_transaction.accounttype == 1 ? this.get_selected_store_product.retail : this.get_selected_store_product.netretail,
       isDiscounted: 0,
-      discId: 0
+      discId: 0,
+      discount: 0
     });
     this.compute_tax_and_discount(this.main);
     this.get_current_transaction.sc_records.forEach(function (el) {
@@ -64090,27 +64114,55 @@ var render = function () {
                       )
                     : _vm._e(),
                   _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "text-sm flex justify-end items-center" },
-                    [
-                      _c("div", { staticClass: "flex items-center mr-4" }, [
-                        _vm._v(
-                          "\n                               Discount\n                            "
-                        ),
-                      ]),
-                      _vm._v(" "),
-                      _c("span", { staticClass: "font-semibold" }, [
-                        _vm._v(
-                          "\n                                " +
-                            _vm._s(
-                              _vm.get_current_transaction.sc_discount_amount
-                            ) +
-                            "\n                            "
-                        ),
-                      ]),
-                    ]
-                  ),
+                  _vm.get_current_transaction.discount > 0
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "text-sm flex justify-end items-center",
+                        },
+                        [
+                          _c("div", { staticClass: "flex items-center mr-4" }, [
+                            _vm._v(
+                              "\n                                Discount\n                            "
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "font-semibold" }, [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(_vm.get_current_transaction.discount) +
+                                "\n                            "
+                            ),
+                          ]),
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.get_current_transaction.is_sc == 1
+                    ? _c(
+                        "div",
+                        {
+                          staticClass: "text-sm flex justify-end items-center",
+                        },
+                        [
+                          _c("div", { staticClass: "flex items-center mr-4" }, [
+                            _vm._v(
+                              "\n                                SC Disc \n                            "
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c("span", { staticClass: "font-semibold" }, [
+                            _vm._v(
+                              "\n                                " +
+                                _vm._s(
+                                  _vm.get_current_transaction.sc_discount_amount
+                                ) +
+                                "\n                            "
+                            ),
+                          ]),
+                        ]
+                      )
+                    : _vm._e(),
                   _vm._v(" "),
                   _c(
                     "div",
@@ -71040,7 +71092,11 @@ var render = function () {
                       [
                         _vm._v(
                           "\n        " +
-                            _vm._s(_vm.sc_discount_amount.toFixed(2)) +
+                            _vm._s(
+                              _vm.discountAmount != 0
+                                ? _vm.discountAmount.toFixed(2)
+                                : _vm.sc_discount_amount.toFixed(2)
+                            ) +
                             "\n    "
                         ),
                       ]

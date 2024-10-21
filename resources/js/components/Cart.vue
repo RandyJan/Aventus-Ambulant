@@ -663,9 +663,19 @@
                                 </span>
                             </div>
                             <!-- Discount -->
-                            <div class="text-sm flex justify-end items-center">
+                            <div v-if="get_current_transaction.discount>0" class="text-sm flex justify-end items-center">
                                 <div class="flex items-center mr-4">
-                                   Discount
+                                    Discount
+                                </div>
+                                <span class="font-semibold">
+                                    {{
+                                        get_current_transaction.discount
+                                    }}
+                                </span>
+                            </div>
+                            <div v-if="get_current_transaction.is_sc == 1" class="text-sm flex justify-end items-center">
+                                <div class="flex items-center mr-4">
+                                    SC Disc 
                                 </div>
                                 <span class="font-semibold">
                                     {{
