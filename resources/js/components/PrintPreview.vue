@@ -284,7 +284,7 @@
                             <div
                                 class="pl-4 flex justify-between items-center text-[8px] font-semibold"
                             >
-                                20.00% SC Disc.
+                                20.00% SC/PWD Disc.
                                 <div>
                                     {{ order_summary.sc_discount_amount }}
                                 </div>

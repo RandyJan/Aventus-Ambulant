@@ -8902,6 +8902,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -8994,6 +8996,10 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
 //
 //
 //
@@ -63463,7 +63469,7 @@ var render = function () {
                               { staticClass: "flex items-center" },
                               [
                                 _vm._v(
-                                  "\n                                Is Senior ?\n                                "
+                                  "\n                                Is Senior/PWD ?\n                                "
                                 ),
                                 _c("Toggle", {
                                   staticClass: "ml-2",
@@ -64148,7 +64154,7 @@ var render = function () {
                         [
                           _c("div", { staticClass: "flex items-center mr-4" }, [
                             _vm._v(
-                              "\n                                SC Disc \n                            "
+                              "\n                                SC/PWD Discount\n                            "
                             ),
                           ]),
                           _vm._v(" "),
@@ -67205,6 +67211,33 @@ var render = function () {
                           ]
                         ),
                         _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass:
+                              "text-sm flex justify-end items-center",
+                          },
+                          [
+                            _c(
+                              "div",
+                              { staticClass: "flex items-center mr-4" },
+                              [
+                                _vm._v(
+                                  "\n                                SC Discount\n                            "
+                                ),
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("span", { staticClass: "font-semibold" }, [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(_vm.order_summary.sc_discount_amount) +
+                                  "\n                            "
+                              ),
+                            ]),
+                          ]
+                        ),
+                        _vm._v(" "),
                         _vm.get_settings.service_charge
                           ? _c(
                               "div",
@@ -67244,32 +67277,34 @@ var render = function () {
                             )
                           : _vm._e(),
                         _vm._v(" "),
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "text-sm flex justify-end items-center",
-                          },
-                          [
-                            _c(
+                        _vm.order_summary.discount != null
+                          ? _c(
                               "div",
-                              { staticClass: "flex items-center mr-4" },
+                              {
+                                staticClass:
+                                  "text-sm flex justify-end items-center",
+                              },
                               [
-                                _vm._v(
-                                  "\n                                 Discount\n                            "
+                                _c(
+                                  "div",
+                                  { staticClass: "flex items-center mr-4" },
+                                  [
+                                    _vm._v(
+                                      "\n                                 Discount\n                            "
+                                    ),
+                                  ]
                                 ),
+                                _vm._v(" "),
+                                _c("span", { staticClass: "font-semibold" }, [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(_vm.order_summary.discount) +
+                                      "\n                            "
+                                  ),
+                                ]),
                               ]
-                            ),
-                            _vm._v(" "),
-                            _c("span", { staticClass: "font-semibold" }, [
-                              _vm._v(
-                                "\n                                " +
-                                  _vm._s(_vm.order_summary.discount) +
-                                  "\n                            "
-                              ),
-                            ]),
-                          ]
-                        ),
+                            )
+                          : _vm._e(),
                         _vm._v(" "),
                         _c(
                           "div",
@@ -68139,6 +68174,16 @@ var staticRenderFns = [
           _c("span", { staticClass: "ml-1" }, [_vm._v(" Unpaid ")]),
         ]
       ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "ml-3 flex items-center text-xs font-semibold" },
+        [
+          _c("div", { staticClass: "w-4 h-4 bg-sky-400" }),
+          _vm._v(" "),
+          _c("span", { staticClass: "ml-1" }, [_vm._v(" Active JO ")]),
+        ]
+      ),
     ])
   },
   function () {
@@ -68696,7 +68741,7 @@ var render = function () {
                     },
                     [
                       _vm._v(
-                        "\n                            20.00% SC Disc.\n                            "
+                        "\n                            20.00% SC/PWD Disc.\n                            "
                       ),
                       _c("div", [
                         _vm._v(

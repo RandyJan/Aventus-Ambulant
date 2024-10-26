@@ -255,7 +255,7 @@
                         >
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
-                                    Is Senior ?
+                                    Is Senior/PWD ?
                                     <Toggle
                                         class="ml-2"
                                         @change="changeSCStatus()"
@@ -675,7 +675,7 @@
                             </div>
                             <div v-if="get_current_transaction.is_sc == 1" class="text-sm flex justify-end items-center">
                                 <div class="flex items-center mr-4">
-                                    SC Disc 
+                                    SC/PWD Discount
                                 </div>
                                 <span class="font-semibold">
                                     {{

@@ -390,14 +390,14 @@
                             </div>
 
                             <!-- SC Discount -->
-                            <!-- <div class="text-sm flex justify-end items-center">
+                            <div class="text-sm flex justify-end items-center">
                                 <div class="flex items-center mr-4">
                                     SC Discount
                                 </div>
                                 <span class="font-semibold">
                                     {{ order_summary.sc_discount_amount }}
                                 </span>
-                            </div> -->
+                            </div>
                             <!-- Service Charge -->
                             <div
                                 v-if="get_settings.service_charge"
@@ -413,8 +413,10 @@
                                     {{ order_summary.service_charge_amount }}
                                 </span>
                             </div>
-                              <!-- SC Discount -->
-                              <div class="text-sm flex justify-end items-center">
+                              <!-- Discount -->
+                              <div
+                              v-if="order_summary.discount != null"
+                              class="text-sm flex justify-end items-center">
                                 <div class="flex items-center mr-4">
                                      Discount
                                 </div>

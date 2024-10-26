@@ -9,6 +9,10 @@
                 <div class="w-4 h-4 bg-yellow-500"></div>
                 <span class="ml-1"> Unpaid </span>
             </div>
+            <div class="ml-3 flex items-center text-xs font-semibold">
+                <div class="w-4 h-4 bg-sky-400"></div>
+                <span class="ml-1"> Active JO </span>
+            </div>
             <!-- <div class="ml-3 flex items-center text-xs font-semibold">
                 <div class="w-4 h-4 bg-sky-500" ></div>
                 <span class="ml-1">
