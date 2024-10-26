@@ -9,6 +9,7 @@ use App\Services\UpdateOrderslipTotalService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AddToCartController extends Controller
 {
@@ -24,6 +25,15 @@ class AddToCartController extends Controller
             DB::beginTransaction();
 
             $os = OrderSlipHeader::where('OSNUMBER', $request->orderslip_number)->first();
+            Log::info($request->all());
+            // Log::info($request->discount + "TEST");
+            if($os->DISCOUNT == null || $os->DISCOUNT == 0){
+                OrderSlipHeader::where('OSNUMBER',$request->orderslip_number)->update(['DISCOUNT'=>$request['product']['discount']]);
+            }
+            else{
+
+                OrderSlipHeader::where('OSNUMBER',$request->orderslip_number)->update(['DISCOUNT'=>DB::raw('DISCOUNT + ' . $request['product']['discount'])]);
+            }
             if (!$os) {
                 DB::rollBack();
                 return response()->json([

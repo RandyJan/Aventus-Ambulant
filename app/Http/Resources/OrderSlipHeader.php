@@ -24,11 +24,7 @@ class OrderSlipHeader extends JsonResource
         // return parent::toArray($request);
 
         $self = $this;
-            $discountData =  OrderSlipDetail::select('DISCOUNT')->where('OSNUMBER',$this->OSNUMBER)->get();
-            $discountAmount = 0;
-            foreach($discountData as $disc){
-                $discountAmount += $disc['DISCOUNT'];
-            }
+         
         return array_merge(
             [
                 'user_current_transaction' => $this->USER_CURRENT_TRANSACTION,
@@ -50,7 +46,7 @@ class OrderSlipHeader extends JsonResource
                 'duration' => computeDuration( Carbon::parse($this->OSDATE), $this->QDATE ),
                 'created_at' => $this->OSDATE,
                 'completed_at' => $this->QDATE,
-                'discount'=>$discountAmount,
+                'discount'=>$this->DISCOUNT,
                 'vatable_sales'     => $this->VATABLE_SALES,
                 'vat_amount'        => $this->VAT_AMOUNT,
                 'sc_discount_percentage'    => $this->SC_DISCOUNT_PERCENTAGE,

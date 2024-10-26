@@ -760,6 +760,7 @@ export default {
                             non_modifiable: this.non_modifiable,
                             modifiable: this.modifiable,
                             senior_headcount: this.sc_count,
+                            discount:this.discountAmount
                             // regular_headcount: this.regular_headcount,
                         })
                         .then((res) => {

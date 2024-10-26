@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Resources\OrderSlipHeader as ResourcesOrderSlipHeader;
+use App\Models\OrderSlipDetail;
 use App\Models\OrderSlipHeader;
 
 class GetCurrentTransactionService
@@ -20,7 +21,8 @@ class GetCurrentTransactionService
             ->where('USER_CURRENT_TRANSACTION', $user_id)
             ->first();
 
-        if (!$item) {
+         
+            if (!$item) {
             return [
                 'success' => false,
                 'message' => 'Resource not found'

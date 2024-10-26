@@ -419,7 +419,7 @@
                                      Discount
                                 </div>
                                 <span class="font-semibold">
-                                    {{ order_summary.sc_discount_amount }}
+                                    {{ order_summary.discount }}
                                 </span>
                             </div>
                             <!-- GRAND TOTAL -->

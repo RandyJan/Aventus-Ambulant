@@ -87,7 +87,8 @@ class CartInformationService
                 'order_type'            => trim($os->OSTYPE),
                 'service_charge_percentage' => $os->SERVICE_CHARGE_PERCENTAGE,
                 'service_charge_amount' => number_format($os->SERVICE_CHARGE_AMT, 2),
-                'accounttype'=>$os->ACCOUNTTYPE
+                'accounttype'=>$os->ACCOUNTTYPE,
+                'discount'=>$os->DISCOUNT
            
             ];
 

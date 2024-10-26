@@ -11667,7 +11667,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             notes: _this3.main.notes,
             non_modifiable: _this3.non_modifiable,
             modifiable: _this3.modifiable,
-            senior_headcount: _this3.sc_count // regular_headcount: this.regular_headcount,
+            senior_headcount: _this3.sc_count,
+            discount: _this3.discountAmount // regular_headcount: this.regular_headcount,
 
           }).then(function (res) {
             toast.fire({
@@ -67263,7 +67264,7 @@ var render = function () {
                             _c("span", { staticClass: "font-semibold" }, [
                               _vm._v(
                                 "\n                                " +
-                                  _vm._s(_vm.order_summary.sc_discount_amount) +
+                                  _vm._s(_vm.order_summary.discount) +
                                   "\n                            "
                               ),
                             ]),
